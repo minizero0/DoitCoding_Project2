@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="mypage_Info.css">
+<meta name="viewport" content="user-scalable=yes, initial-scale=1">
+</head>
+<body class="mypage_layout">
+ 		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
+ 		<div class="main_user">
+ 				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="myPage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 		</div>
+ 	    <nav id="navigation">
+              <form action="" method="post" class="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력...">
+				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </form>
+              <ul>
+                  <li class="home"><a href="mainTest.jsp">홈</a></li>
+                  <li><a href="#">시사회</a></li>	
+                  <li><a href="#">연극</a></li>
+                  <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">콘서트</a></li>
+             </ul>
+        </nav>
+       <div id="menu-bar">
+       		<ul>
+       			<li id="title">MyPage</li>
+       			<li id="myinfo"><a href="mypage_Info.html">내 정보</a></li>
+       			<li><a href="mypage_Book.html">예매내역</a></li>
+       			<li><a href="mypage_Draw.html">드로우내역</a></li>
+       			<li><a href="mypage_Review.html">내 후기</a></li>       		
+       		</ul>
+       </div>
+       <div id="background"></div>
+       <form action="" method="post" id="form">
+		<table>
+			<tr>
+				<td>아이디</td>
+				<td><input type="text" name="custid" id="custid" class="box" readonly/></td>
+			</tr>		
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="pwd" class="box"></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="info">* 최소 6자 이상 영문, 숫자로만 입력</td>
+			</tr>
+			<tr>
+				<td>비밀번호 확인</td>
+				<td><input type="password" class="box"></td>
+			</tr>
+			<tr>
+				<td>이름</td>
+				<td><input type="text" name="name" class="box" size="10"></td>
+			</tr>
+			<tr>
+				<td>이메일주소</td>
+				<td>
+					<input type="text" name="email" size="10" class="box">&nbsp;@&nbsp;
+					<select name="email" class="cbox">
+						<option value="@gmail.com">gmail.com</option>
+						<option value="@naver.com">naver.com</option>
+						<option value="@hanmail.net">hanmail.net</option>
+						<option value="@kakao.com">kakao.com</option>
+						<option value="">직접입력</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>생년월일</td>
+				<td><input type="text" name="birth" class="box"></td>
+			</tr>
+			<tr>
+		        <td>전화번호</td>
+		        <td>
+		        	<input type="text" name="phone" maxlength="3" size="4" class="box"> -
+            		<input type="text" name="phone" maxlength="4" size="4" class="box"> -
+            		<input type="text" name="phone" maxlength="4" size="4" class="box">
+            		<button>중복확인</button>
+       		   </td>
+      	   </tr>
+      	   <tr>
+      	   		<td>성별</td>
+      	   		<td class="td1">
+					남성<input type="radio" id="male" name="gender" value="male">&nbsp;&nbsp;&nbsp;&nbsp;
+					여성<input type="radio" name="gender" value="female">
+				</td>			
+      	   </tr>
+      	   <tr>
+      	   		<td>관심사</td>
+      	   		<td class="td1">
+      	   			시사회<input type="radio" name="favor" value="preview">
+      	   			연극<input type="radio" name="favor" value="play">
+					뮤지컬<input type="radio" name="favor" value="musical">
+					콘서트<input type="radio" name="favor" value="concert">
+      	   		</td>
+      	   </tr>
+		</table>
+		<div class="caption">
+			<button id="btn_cancel">취소</button>&nbsp;&nbsp;
+			<button id="btn_update">수정하기</button>
+		</div>
+	</form>
+  	  <div id="main-footer">
+		<footer>
+			<div>Footer</div>
+		</footer>
+	</div>	  
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="user-scalable=yes, initial-scale=1">
+<!-- 초기화하기 -->
+<style type="text/css">
+	.mypage_layout{
+        width : 1380px;
+		margin : auto;
+    }
+	*{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	}	
+	a{
+		text-decoration: none;
+	}	
+	li{
+		list-style: none;
+	}
+	form{
+		margin-top : -25%;
+		bottom : 100px;
+	}
+</style>
+<!-- 상단 구성하기 -->
+<style type="text/css">
+	#logo{
+		width: 370px;
+		height: 110px;
+		padding-top : 5px;
+		cursor : pointer;
+	}
+	.main_user{
+		float : right;
+		padding-top : 60px;
+		padding-right : 15px;
+	}
+	.main_user a{
+		color : #091140;
+		position : relative;
+		font-size : 11px;
+		font-style : bold;
+		margin :-18px;
+		padding-right : 20px;
+	}
+	.main_user img{
+		position : relative;
+		width : 46px;
+		height : 45px;
+		bottom : 15px;
+		left : 47px;
+	}
+	#login{
+		right : 7px;
+		bottom : 1px;
+	}
+	#login img{
+		padding-right : 6px;
+	}
+	.search{
+		overflow : hidden;
+		position: relative;
+  		top: 6px;
+  		right : 15px;
+		float : right;
+		width : 250px;
+		height : 40px; 
+      	border : 2px solid white; 
+      	border-radius : 25px 25px 25px 25px;
+	}
+	.search_txt{
+		position: relative;
+		color : white;
+		top: -10px;
+  		right : -15px;
+		width : 175px;
+		height : 30px; 
+		border: none; 
+		font-size : 13px;
+		background-color:rgba(255, 255, 255, 0);
+	}
+	.search_btn{
+		position : relative;
+  		right : -25px;
+	}
+</style>
+<!-- main-header 구성하기 -->
+<style type="text/css">
+	#navigation{
+		top: 0;
+	}	
+	#navigation ul{
+		background-color : #08428C;
+		border-radius : 5px 5px 5px 5px;
+		list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	}
+	#navigation ul:after{
+	    content:'';
+	    display: block;
+	    clear:both;
+	}
+	#navigation ul > li{
+		list-style : none;
+		display: inline-block;
+	    text-align: center;
+	    padding: 14px 45px;
+	}
+	#navigation li.home a{
+		color: #F2AE30;
+		font-weight : 600;
+		font-size : 17px;
+	}
+	#navigation li > a{
+		font-size : 16px;
+		color : white;
+		height: 100px;
+		text-decoration: none;
+		line-height : 30px;
+	}
+	#navigation li:hover:not(.home){
+		transition-duration: 0.4s;
+		border-bottom: 5px solid #F2AE30;
+		padding-bottom : 9px;
+	}
+	#navigation ul li:hover ul {
+		display: block;
+	}
+	hr{
+		border : 0;
+		height : 2.5px;
+		background-color : #08348C;
+	}
+</style>
+<!-- menu-bar -->
+<style type="text/css">
+	#menu-bar{
+		position : sticky;
+		top: 0;
+		margin-top : 100px;
+	}
+	#menu-bar li:not(#title){
+		color : #08428C;
+		width : 200px; height : 25px;
+		line-height : 25px;
+		padding : 15px;
+		cursor : pointer;
+		margin : -1.5px;
+		border : 2px solid grey;
+		border-radius : 10px 0px 0px 10px;
+	}
+	#menu-bar li:hover:not(#title){
+		font-weight : bolder;
+		color : #08428C;
+		background-color : #dcdcdc;
+		transition-duration: 0.5s;
+	}
+	#menu-bar li a:not(#title){
+		color : #08428C;
+	}
+	#menu-bar #mybook{
+		font-weight : bolder;
+		color : #08428C;
+		background-color : #dcdcdc;
+	}
+	#title{
+		display : inline-block;
+		width : 199px; height : 70px;
+		padding : 15px;
+		font-size : 20px;
+		font-weight : bold;
+		text-align : center;
+		border : 1.5px solid #08428C;
+		border-radius : 10px 0px 0px 10px;
+		background-color : #08428C;
+		color : #F2AE30;
+		line-height: 70px;
+	}
+</style>
+<!-- 예매 내역 -->
+<style type="text/css">
+	.booklist{
+		position : relative;
+		left : 23%;
+		margin-bottom : 100px;
+		width : 800px;
+		height : 250px;
+		border : 2px solid #dcdcdc;
+		border-radius : 40px;
+		margin : 60px;
+	}
+	.booklist img{
+		position : relative;
+		border-radius : 40px;
+		right : 8px;
+		bottom : 2px;
+		border : 1px solid #dcdcdc;
+	}
+	.booklist li{
+		position : relative;
+		margin : 15px;
+		left : 170px;
+		bottom : 265px;
+		color : #091140;
+	}
+	.booklist h2{
+		position : relative;
+		left : 222px;
+		bottom : 265px;
+		color : #08348C;
+	}
+	.booklist button{
+		position : relative;
+		width : 100px;  height : 32px;
+		left : 670px;
+		bottom : 430px;
+		background-color : #08348C; 
+		border : none;
+		color : white;
+		border-radius : 5px;
+	}
+	.booklist button:hover{
+		background-color : #F2AE30;
+		color : #08348C;
+		transition-duration: 0.5s;
+	}
+	input[type="checkbox"]+label{
+		display: inline-block;
+		position : relative;
+		width : 50px; height : 50px;
+		left : 720px;
+		bottom : 410px;
+		border : 2px solid #dcdcdc;
+		border-radius : 40px;
+		cursor : pointer;
+	}
+	input[type="checkbox"]:checked+label:after {
+	    position: absolute;
+	    border : 3px solid #F2AE30;
+	    border-radius : 40px;
+	    width : 50px; height : 50px;
+	    font-size : 40px;
+	    color : #F2AE30;
+	    text-align : center;
+	    line-height : 50px;
+	    content: '✔';
+		right : -3px; bottom : -3px;
+}
+	input[type="checkbox"]{
+		display: none;
+	}
+	#book_cancel{
+		position : relative;
+		width : 100px;  height : 32px;
+		margin-left : 750px;
+		margin-top : 20px;
+		background-color : #dcdcdc; 
+		border : none;
+		color : #08348C;
+		border-radius : 5px;
+	}
+</style>
+<!-- footer 구성하기 -->
+<style type="text/css">
+	#main-footer{
+		padding-top: 100px;
+	}
+	footer{
+		line-height: 100px;
+		background: #08428C;
+		color: white;
+		font-size: 14px;
+		text-align: center;
+	}
+</style>
+</head>
+<body class="mypage_layout">
+ 		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
+ 		<div class="main_user">
+ 				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 		</div>
+ 	    <nav id="navigation">
+              <form action="" method="post" class="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력...">
+				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </form>
+              <ul>
+                  <li class="home"><a href="#">홈</a></li>
+                  <li><a href="#">시사회</a></li>	
+                  <li><a href="#">연극</a></li>
+                  <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">콘서트</a></li>
+             </ul>
+        </nav>
+       <div id="menu-bar">
+       		<ul>
+       			<li id="title">MyPage</li>
+       			<li><a href="mypage_Info.html">내 정보</a></li>
+       			<li id="mybook"><a href="mypage_Book.html">예매내역</a></li>
+       			<li><a href="mypage_Draw.html">드로우내역</a></li>
+       			<li><a href="mypage_Review.html">내 후기</a></li>      		
+       		</ul>
+       </div>
+    <form action="" method="post" id="form">
+		<div class="booklist">
+			<img src="./image/서툰 사람들.png" width="200" height="252">
+			<h2>제목</h2>
+			<ul>
+				<li>예매번호 : </li>
+				<li>관람일 : </li>
+				<li>상영관 : </li>
+				<li>관람인원 : </li>
+				<li>관람좌석 : </li>
+			</ul>
+			<button>후기작성</button>
+			<input type="checkbox" id="check">
+			<label for="check"></label>
+		</div>
+		<div class="booklist">
+			<img src="./image/blackpink.jpg" width="200" height="252">
+			<h2>제목</h2>
+			<ul>
+				<li>예매번호 : </li>
+				<li>관람일 : </li>
+				<li>상영관 : </li>
+				<li>관람인원 : </li>
+				<li>관람좌석 : </li>
+			</ul>
+			<button>후기작성</button>
+			<input type="checkbox" id="check2">
+			<label for="check2"></label>
+		</div>
+		<button id="book_cancel">예매취소</button>
+	</form>
+  	  <div id="main-footer">
+		<footer>
+			<div>Footer</div>
+		</footer>
+	</div>	  
+</body>
+</html>

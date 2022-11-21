@@ -217,10 +217,8 @@ public class TicketDAO {
 	public String todayDate() {
 		 // 현재 날짜 구하기
         LocalDate now = LocalDate.now();
- 
         // 포맷 정의
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
- 
         // 포맷 적용
         String formatedNow = now.format(formatter);
         
@@ -231,16 +229,78 @@ public class TicketDAO {
 	public String nowTime() {
 		// 현재 시간
         LocalTime now = LocalTime.now();
- 
         // 현재시간 출력
         System.out.println(now);  // 06:20:57.008731300
- 
         // 포맷 정의하기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초");
- 
         // 포맷 적용하기
         String formatedNow = now.format(formatter);
         
 		return formatedNow;
 	}
+	
+	//잔여좌석수 반환하는 메소드
+	public int leftSeat(int ticketid) {
+		int num = 0;
+		String sql = "select count(*) from seat where ticketid = ? and check_seat= 'n'";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ticketid);
+			num = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return num;
+	}
+	
+	//검색 기능 메소드. ticket * 리턴. 검색 키워드는 제목, 캐스트
+	public ArrayList<TicketVO> searchTicket(String keyword){
+		ArrayList<TicketVO> list = new ArrayList<TicketVO>();
+		String sql = "select * from ticket where ticket_name like '%"+keyword+"%' or cast like '%"+keyword+"%'";
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				TicketVO t = new TicketVO();
+				t.setTicketid(rs.getInt("ticketid"));
+				t.setCateid(rs.getInt("cateid"));
+				t.setPlaceid(rs.getString("placeid"));
+				t.setTicket_name(rs.getString("ticket_name"));
+				t.setPrice(rs.getInt("price"));
+				t.setTicket_date(rs.getString("ticket_date"));
+				t.setMin_age(rs.getInt("min_age"));
+				t.setRuntime(rs.getInt("runtime"));
+				t.setCast(rs.getString("cast"));
+				t.setContent(rs.getString("content"));
+				t.setImg_fname(rs.getString("img_fname"));
+				t.setVid_url(rs.getString("vid_url"));
+				t.setLoc(rs.getString("loc"));
+				t.setLat(rs.getDouble("lat"));
+				t.setLng(rs.getDouble("lng"));
+				list.add(t);
+			}
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(stmt != null) {try {stmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return list;
+	}
+	
 }

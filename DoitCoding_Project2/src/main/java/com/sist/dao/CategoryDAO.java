@@ -28,7 +28,7 @@ public class CategoryDAO {
 	//카테고리 추가
 	public int insertCategory(CategoryVO c) {
 		int re = -1;
-		String sql = "insert into category(cateid,catename) values(seq_category.nextval,?)";
+		String sql = "insert into category(cateid,catename) values(?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -36,7 +36,8 @@ public class CategoryDAO {
 			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, c.getCatename());
+			pstmt.setInt(1, c.getCateid());
+			pstmt.setString(2, c.getCatename());
 			re = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
