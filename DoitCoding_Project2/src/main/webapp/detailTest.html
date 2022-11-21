@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 초기화하기 -->
+<style type="text/css">
+	.main_layout{
+        width:1380px;
+		margin : auto;
+    }
+	*{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	}	
+	a{
+		text-decoration: none;
+	}	
+	li{
+		list-style: none;
+	}
+</style>
+<!-- 상단 구성하기 -->
+<style type="text/css">
+	#logo{
+		width: 370px;
+		height: 110px;
+		padding-top : 5px;
+	}
+	.main_user{
+		float : right;
+		padding-top : 60px;
+		padding-right : 15px;
+	}
+	.main_user a{
+		color : #091140;
+		position : relative;
+		font-size : 11px;
+		font-style : bold;
+		margin :-18px;
+		padding-right : 20px;
+	}
+	.main_user img{
+		position : relative;
+		width : 46px;
+		height : 45px;
+		bottom : 15px;
+		left : 47px;
+	}
+	#login{
+		right : 7px;
+		bottom : 1px;
+	}
+	#login img{
+		padding-right : 6px;
+	}
+	.search{
+		overflow : hidden;
+		position: relative;
+  		top: 6px;
+  		right : 15px;
+		float : right;
+		width : 250px;
+		height : 40px; 
+      	border : 2px solid white; 
+      	border-radius : 25px 25px 25px 25px;
+	}
+	.search_txt{
+		position: relative;
+		color : white;
+		top: -10px;
+  		right : -15px;
+		width : 175px;
+		height : 30px; 
+		border: none; 
+		font-size : 13px;
+		background-color:rgba(255, 255, 255, 0);
+	}
+	.search_btn{
+		position : relative;
+  		right : -25px;
+	}
+</style>
+<!-- main-header 구성하기 -->
+<style type="text/css">
+	#navigation{
+		position: sticky;
+		top: 0;
+	}	
+	#navigation ul{
+		background-color : #08428C;
+		border-radius : 5px 5px 0px 0px;
+		list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	}
+	#navigation ul:after{
+	    content:'';
+	    display: block;
+	    clear:both;
+	}
+	#navigation ul > li{
+		list-style : none;
+		display: inline-block;
+	    text-align: center;
+	    padding: 14px 45px;
+	}
+	#navigation li.home a{
+		color: #F2AE30;
+		font-weight : 600;
+		font-size : 17px;
+	}
+	#navigation li > a{
+		font-size : 16px;
+		color : white;
+		height: 100px;
+		text-decoration: none;
+		line-height : 30px;
+	}
+	#navigation li:hover:not(.home){
+		transition-duration: 0.4s;
+		border-bottom: 5px solid #F2AE30;
+		padding-bottom : 9px;
+	}
+	#navigation ul li:hover ul {
+		display: block;
+	}
+	hr{
+		border : 0;
+		height : 2.5px;
+		background-color : #08348C;
+	}
+</style>
+<!-- menu-bar -->
+<style type="text/css">
+	#menu-bar{
+		width : 280px; height : 265px;
+		margin-top : 100px;
+		background-color : white;
+		border-radius : 10px 10px 10px 10px;
+		border : 2px solid #08428C;
+	}
+	#menu-bar li{
+		color : #08428C;
+		margin-right : 10px;
+		padding : 18px;
+	}
+</style>
+<!-- footer 구성하기 -->
+<style type="text/css">
+	#main-footer{
+		padding-top: 100px;
+	}
+	footer{
+		line-height: 100px;
+		background: #08428C;
+		color: white;
+		font-size: 14px;
+		text-align: center;
+	}
+</style>
+</head>
+<body class="main_layout">
+ 		<img src="./image/logo.png" id="logo">
+ 		<div class="main_user">
+ 				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 		</div>
+ 	    <nav id="navigation">
+              <form action="" method="post" class="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력...">
+				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </form>
+              <ul>
+                  <li class="home"><a href="#">홈</a></li>
+                  <li><a href="#">시사회</a></li>	
+                  <li><a href="#">연극</a></li>
+                  <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">콘서트</a></li>
+             </ul>
+        </nav>
+        
+        
+        <!-- 상세 페이지 -->
+        <!-- 티켓 인스턴스 정보 ul - li 작성 -->
+		<div>
+			<div>포스터 이미지 삽입</div>
+			<h2>제목</h2>
+			<ul>
+				<li>관람일 </li>
+				<li>장소 </li>
+				<li>관람등급 </li>
+				<li>관람시간 </li>
+				<li>가격 </li>
+			</ul>
+		</div>
+		
+		
+		<!-- 티켓 인스턴스 정보 table 작성 -->
+		<div>
+			<div>포스터 이미지 삽입</div>
+			<table>
+				<tr>
+					<td colspan="2">제목</td>
+				</tr>
+				<tr>
+					<td>관람일</td>
+					<td>관람일 입력창</td>
+				</tr>
+				<tr>
+					<td>장소</td>
+					<td>장소 입력창</td>
+				</tr>
+				<tr>
+					<td>관람등급</td>
+					<td>관람등급 입력창</td>
+				</tr>
+				<tr>
+					<td>관람시간</td>
+					<td>관람시간 입력창</td>
+				</tr>
+				<tr>
+					<td>가격</td>
+					<td>가격 입력창</td>
+				</tr>
+			</table>
+			<button>결과확인</button>
+			<button>신청취소</button>
+		</div>
+        
+        
+        <!-- 예매하기 -->
+        <form action="">
+        	<!-- 날짜 선택창 (달력) -->
+        	
+        	<!-- 남은 좌석 -->
+        	
+        	<button>서버시간 ==> 예매하기</button>
+        	<button>드로우</button>
+        </form>
+        
+        
+        <!-- 탭 - 상세정보/후기 -->
+        <ul>
+        	<li>상세정보</li>
+        	<li>후기</li>
+        </ul>
+        
+        
+        <!-- 상세정보 -->
+        <div>
+        	<div>
+        		<iframe>비디오</iframe>
+        	</div>
+​
+       		<ul>
+       			<li>캐스트</li>
+       			<li>캐스트 내용</li>
+       		</ul>
+       		
+       		<div>컨텐츠 내용</div>
+       		
+       		<div>오시는 길</div>
+        </div>
+        
+        <hr>
+        
+        <!-- 통계 -->
+        <div>남녀 예매율</div>
+        <div>세대별 예매율</div>
+        
+        <!-- 후기 ==> 후기 위치로 이동 https://webisfree.com/2021-08-19/%ED%8A%B9%EC%A0%95-%EC%97%98%EB%A6%AC%EB%A8%BC%ED%8A%B8%EB%A1%9C-%EC%8A%A4%ED%81%AC%EB%A1%A4%EC%9D%84-%EC%B2%9C%EC%B2%9C%ED%9E%88-%EC%9D%B4%EB%8F%99%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95-scrollintoview-smooth -->
+        <!-- 후기 정렬 ==>평점 높은순/평점 낮은순 -->
+        <select>
+        	<option>평점 높은순</option>
+        	<option>평점 낮은순</option>
+        </select>
+​
+  	  <div id="main-footer">
+		<footer>
+			<div>Footer</div>
+		</footer>
+	</div>	  
+</body>
+</html>
