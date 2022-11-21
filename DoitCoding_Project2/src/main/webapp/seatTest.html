@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	body{
+		background-color : rgba(0, 0, 0, 0.3);
+	}
+	*{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	}	
+	a{
+		text-decoration: none;
+	}	
+	div{
+		 position: absolute;
+		  top:50%;
+		  left: 50%;
+		  transform: translate(-50% , -50%)
+	}
+</style>
+<!-- 좌석 -->
+<style type="text/css">
+	#background{
+		width : 600px;  height : 450px;
+		background-color : white;
+		border : 2px solid gray;
+		border-radius : 10px 10px 10px 10px;
+	}
+	button{
+		margin-top : 50px;
+		width : 35px;  height : 35px;
+		margin : 5px;
+		border-radius : 10px 10px 10px 10px;
+		border : none;
+		background-color : #08348C;
+		color : white;
+	}
+</style>
+<!-- 마우스효과 -->
+<style type="text/css">
+	button:hover:not(.x){
+		background-color : #F2AE30;
+	}
+	button.active:not(.x){
+		background-color : #F2AE30;
+		color : #08348C;
+		font-weight : 700;
+	}
+	.x{
+		background-color : #dcdcdc;
+		color : gray;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("button").on("click",function(){
+			  $("button").removeClass("active");
+			  $(this).addClass("active");
+		});
+	});
+</script>
+</head>
+<body>
+	<div id="background"></div>
+	<div>
+			<button class="x">A1</button>
+			<button class="x">A2</button>
+			<button>A3</button>
+			<button>A4</button>
+			<button >A5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button >A6</button>
+			<button >A7</button>
+			<button class="x">A8</button>
+			<button class="x">A9</button>
+			<button class="x">A10</button>
+			<br>
+			<button>B1</button>
+			<button>B2</button>
+			<button class="x">B3</button>
+			<button>B4</button>
+			<button>B5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button>B6</button>
+			<button>B7</button>
+			<button>B8</button>
+			<button>B9</button>
+			<button>B10</button>
+			<br>
+			<button>C1</button>
+			<button>C2</button>
+			<button>C3</button>
+			<button>C4</button>
+			<button>C5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button>C6</button>
+			<button class="x">C7</button>
+			<button class="x">C8</button>
+			<button class="x">C9</button>
+			<button class="x">C10</button>				
+	</div>
+</body>
+</html>
