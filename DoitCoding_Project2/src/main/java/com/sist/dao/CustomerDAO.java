@@ -217,6 +217,76 @@ public class CustomerDAO {
 		return login_Flag;
 	}
 	
+	// custid 중복을 확인하는 메소드
+	
+	public int confirmCustomerID(String custid) {
+		CustomerVO c = null;
+		int confirm_custid = 0;
+		String sql = "select custid from customer where custid=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, custid);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				if(rs.getString(1).equals(custid)) {
+					confirm_custid = 1;
+				}
+			}
+			
+		}catch(Exception e) {
+			System.out.println("예외" + e.getMessage());
+			}finally {
+				if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			}
+		
+		return confirm_custid;
+	}
+	
+	// phone 중복을 확인하는 메소드
+	
+	public int confirmCustomerPhone(String phone) {
+		CustomerVO c = null;
+		int confirm_phone = 0;
+		String sql = "select phone from customer where phone=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, phone);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				if(rs.getString(1).equals(phone)) {
+					confirm_phone = 1;
+				}
+			}
+			
+		}catch(Exception e) {
+			System.out.println("예외" + e.getMessage());
+			}finally {
+				if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			}
+		
+		return confirm_phone;
+	}
+	
 	
 	
 }

@@ -10,18 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sist.dao.CustomerDAO;
+import com.sist.vo.CustomerVO;
 
 /**
- * Servlet implementation class LoginCustomer
+ * Servlet implementation class ConfirmCustomerPhone
  */
-@WebServlet("/LoginCustomer")
-public class LoginCustomer extends HttpServlet {
+@WebServlet("/ConfirmCustomerPhone")
+public class ConfirmCustomerPhone extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginCustomer() {
+    public ConfirmCustomerPhone() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,28 +31,16 @@ public class LoginCustomer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String custid = request.getParameter("custid");
-		String pwd = request.getParameter("pwd");
-		boolean login_Flag;
-		
-		System.out.println("custid :"+ custid);
-		System.out.println("pwd : " +pwd);
-		
+		String phone = request.getParameter("phone");
 		CustomerDAO customerdao = CustomerDAO.getInstance();
 		
-//		세션 생성 후 반환
-//		if(login_Flag) {
-//			HttpSession session = request.getSession();
-//			session.setAttribute("custid", custid);
-//			session.setMaxInactiveInterval(60*30);
-//		}
-		
-		login_Flag = customerdao.login(custid, pwd);
+		int confirm_phone = customerdao.confirmCustomerPhone(phone);
 		
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
-		out.print(login_Flag);
+		out.print(confirm_phone);
 		out.close();
+		
 		
 	}
 

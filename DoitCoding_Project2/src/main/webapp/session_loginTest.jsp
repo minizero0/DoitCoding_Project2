@@ -123,21 +123,18 @@
 			$.ajax(url, {
 				data:data,
 				success:function(login_Flag){
-					// ****** 로그인한 아이디, 비번이 담긴 주소로 이동시켜야 함
 					alert(login_Flag);
-					
-					//로그인이 성공된다면 session custid를 로그인한 아이디로 설정
-					if(login_Flag){		
+					if(login_Flag){
 						sessionStorage.setItem("custid", custid);
-						$(location).attr('href', 'mainTest.html');		//성공 후 메인페이지로 이동	
 					}
+					
 				}
 			});
 			e.preventDefault();
-
+			
+			
 			
 		}); // form_login이 제출되었을 때
-		
 		
 	}) // 전체 $(function)
 

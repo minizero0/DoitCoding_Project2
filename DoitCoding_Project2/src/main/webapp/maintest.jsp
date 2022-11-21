@@ -184,7 +184,7 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script >
 	$(function(){
-		var str = sessionStorage.getItem("custid");			//로그인된 아이디 가져오기
+		var str = sessionStorage.getItem("custid");			//login된 아이디 가져오기
 	})
 </script>
 <!--<link rel="stylesheet" type="text/css" href="mainTest.css"> -->
@@ -225,6 +225,10 @@
      	</ul>
      	<br>
      </div>
+     <%
+		String str = (String)session.getAttribute("custid");
+		System.out.print("sessionid:"+str);
+	%>
      <div id="main-footer">
 		<footer>
 			<div>Footer</div>
