@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -190,7 +191,7 @@ public class CustomerDAO {
 		boolean login_Flag = false;
 		String sql = "select pwd from customer where custid=?";
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt = null;	
 		ResultSet rs = null;
 
 		try {
@@ -286,6 +287,56 @@ public class CustomerDAO {
 		
 		return confirm_phone;
 	}
+	
+	//db에서 생일 가져오기
+		public String getBirth(String custid) {
+			String birth = null;
+			String sql = "select birth from customer where custid=?";
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				Context context = new InitialContext();
+				DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+				conn = ds.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, custid);
+				rs = pstmt.executeQuery();
+			} catch (Exception e) {
+				System.out.println("예외발생:"+e.getMessage());
+			} finally {
+				if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			}
+			return birth;			 
+		}
+		
+		//생년월일로 만 나이 구하는 메소드
+		public int getAge(String birth) {
+			int age = 0;
+			
+			//태어난 년월일 문자열을 숫자로 변환
+			String strYear = birth.substring(0, 3);
+			String strMonth = birth.substring(5,6);
+			String strDay = birth.substring(8, 9);
+			int birthYear = Integer.parseInt(strYear);
+			int birthMonth = Integer.parseInt(strMonth);
+			int birthDay = Integer.parseInt(strDay);
+			
+			//현재 년월일
+			Calendar today = Calendar.getInstance();	//년월일시분초
+			int thisYear = today.get(Calendar.YEAR);
+			int thisMonth = today.get(Calendar.MONTH)+1;	//0월부터 시작하기 때문에 +1
+			int thisDay = today.get(Calendar.DAY_OF_MONTH);
+			
+			//현재 만 나이 구하기
+			age = thisYear-birthYear;
+			if(birthMonth*100+birthDay > thisMonth*100+thisDay) {
+				age--;		//생일이 지나지 않았으면 1살을 뺌
+			}
+			return age;
+		}
+		
 	
 	
 	

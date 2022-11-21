@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("button").on("click",function(){
+			  $("button").removeClass("active");
+			  $(this).addClass("active");
+		});
+	});
+</script>
+</head>
+<body>
+	<!-- 인원 선택 -->
+	<div>
+		<input type="radio" name="person" id="zero" value="0"><label for="zero">0명</label>
+		<input type="radio" name="person" id="one" value="1"><label for="one">1명</label>
+		<input type="radio" name="person" id="two" value="2"><label for="two">2명</label>
+	</div>
+	
+	
+	<!-- 좌석 선택 -->
+	<div>
+		<button id="a1">A1</button>
+		<button id="a2">A2</button>
+		<button id="a3">A3</button>
+		<button id="a4">A4</button>
+		<button id="a5">A5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="a6">A6</button>
+		<button id="a7">A7</button>
+		<button id="a8">A8</button>
+		<button id="a9">A9</button>
+		<button id="a10">A10</button>
+		<br>
+		<button id="b1">B1</button>
+		<button id="b2">B2</button>
+		<button id="b3">B3</button>
+		<button id="b4">B4</button>
+		<button id="b5">B5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="b6">B6</button>
+		<button id="b7">B7</button>
+		<button id="b8">B8</button>
+		<button id="b9">B9</button>
+		<button id="b10">B10</button>
+		<br>
+		<button id="c1">C1</button>
+		<button id="c2">C2</button>
+		<button id="c3">C3</button>
+		<button id="c4">C4</button>
+		<button id="c5">C5</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="c6">C6</button>
+		<button id="c7">C7</button>
+		<button id="c8">C8</button>
+		<button id="c9">C9</button>
+		<button id="c10">C10</button>				
+	</div>
+	
+	<!-- 예매 상태 -->
+	<div>
+		<ul>
+			<li>예매완료</li>
+			<li>선택가능</li>
+		</ul>
+	</div>
+		
+		
+	<!-- 티켓 정보 -->
+	<form action="">
+		<div>
+			<label>관람 정보</label>
+			<ul>
+				<li>제목</li>
+				<li>관람일시</li>
+				<li>가격</li>
+			</ul>
+		</div>
+	
+		<div>
+			<label>선택 내역</label>
+			<ul>
+				<li>매수</li>
+				<li>좌석</li>
+			</ul>		
+		</div>
+		
+		<div>
+			<label>최종 가격</label>
+			<div>가격*매수 원</div>
+		</div>
+		<input type="reset" value="좌석 다시선택">		<!-- 누르면 선택된 좌석버튼 초기화 -->
+		<input type="submit" value="예매 완료">
+		<!-- 좌석버튼을 선택한 인원에 맞춰 누르면 좌석선택창이 비활성화되고
+			 선택 내역에 매수와 선택 좌석명이 입력되고 최종 가격이 계산되어 나타남 -->
+		<!-- [예매 완료]를 누르면 alert으로 '예매가 완료되었습니다. 예매 내역을 확인하시겠습니까?'
+			 ==> Yes 누르면 마이페이지-예매 내역으로 이동 / No 누르면 해당 티켓 상세 페이지로 -->			
+	</form>
+</body>
+</html>

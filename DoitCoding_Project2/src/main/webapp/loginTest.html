@@ -127,7 +127,7 @@
 					alert(login_Flag);
 					
 					//로그인이 성공된다면 session custid를 로그인한 아이디로 설정
-					if(login_Flag){		
+					if(login_Flag == "true"){		
 						sessionStorage.setItem("custid", custid);
 						$(location).attr('href', 'mainTest.html');		//성공 후 메인페이지로 이동	
 					}

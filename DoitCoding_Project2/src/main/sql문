@@ -1,0 +1,519 @@
+//명진님이 221121 슬랙에 올려주신 최최최종 인스턴스
+
+
+<< 1. 2차 프로젝트 계정 생성 및 권한 부여 >>
+  - create user c##project2 identified by project2;
+  - grant connect, resource, dba to c##project2;
+  ==>사용자명: c##project2 / 비밀번호: project2
+  
+<< 2. 테이블 생성 >>
+  * 시퀀스 생성 ==> Ticket, Seat 테이블
+  * 메소드로 번호 부여 ==> Book, Draw, Review 테이블
+  
+  ① Category 테이블
+	create table category(
+    cateid number primary key,
+    catename varchar2(20) not null
+	);
+
+
+  ② Customer 테이블
+	create table customer(
+    custid varchar2(20) primary key,
+    pwd varchar2(20) not null,
+    name varchar2(20) not null,
+    birth varchar2(20) not null,
+    email varchar2(30) not null,
+    phone varchar2(20) not null unique,
+    gender varchar2(20) not null,
+    cateid number references category(cateid)
+	);
+
+  ③ Place 테이블
+	create table place(
+    placeid varchar2(10) primary key,
+    seatnum number not null
+	);
+
+  ④ Ticket 테이블
+	create table ticket(
+    ticketid number primary key,
+    cateid number references category(cateid),
+    placeid varchar2(10) references place(placeid),
+    ticket_name varchar2(50) not null,
+    price number not null,
+    ticket_date varchar2(20) not null,
+    min_age number not null,
+    runtime number not null,
+    cast varchar2(200),
+    content varchar2(1000) not null,
+    img_fname varchar2(100) not null,
+    vid_url varchar2(300) null,
+    loc varchar2(100) not null,
+    lat number not null,
+    lng number not null 
+	);
+	create sequence seq_ticket;
+	
+  ⑤ Seat 테이블
+	create table seat(
+    seatid number primary key,
+    placeid varchar2(10) references place(placeid),
+    ticketid number references ticket(ticketid),
+    seatname varchar2(10) not null,
+    check_seat varchar2(10) default 'n'
+	);
+	create sequence seq_seat;
+	
+  ⑥ Book 테이블
+	create table book(
+    bookid number primary key,
+    custid varchar2(20) references customer(custid),
+    ticketid number references ticket(ticketid),
+    seatid number references seat(seatid)
+	);
+	
+  ⑦ Draw 테이블
+	create table draw(
+    drawid number primary key,
+    custid varchar2(20) references customer(custid),
+    ticketid number references ticket(ticketid),
+    seatid number references seat(seatid)
+	);
+	
+  ⑧ Review 테이블
+	create table review(
+    reviewid number primary key,
+    custid varchar2(20) references customer(custid),
+    ticketid number references ticket(ticketid),
+    score number not null,
+    review_content varchar2(500) not null
+	);
+	
+<< 3. ed format 지정 >>
+column cateid format 99;
+column catename format a10;
+column custid format a15;
+column pwd format a15;
+column name format a10;
+column birth format a15;
+column email format a20;
+column phone format a15;
+column gender format a10;
+column placeid format a10;
+column seatnum format 999;
+column ticketid format 999;
+column ticket_name format a20;
+column price format 999,999;
+column ticket_date format a15;
+column min_age format 999;
+column runtime format 999;
+column cast format a20;
+column content format a30;
+column img_fname format a15;
+column vid_url format a15;
+column loc format a15;
+column seatid format 999;
+column seatname format a10;
+column check_seat format a5;
+column bookid format 999;
+column drawid format 999;
+column reviewid format 999;
+column review_content format a30;
+<< 4. 테이블 인스턴스 >>
+  ① Category 테이블
+	insert into category(cateid,catename) values(1,'시사회');
+	insert into category(cateid,catename) values(2,'뮤지컬');
+	insert into category(cateid,catename) values(3,'연극');
+	insert into category(cateid,catename) values(4,'콘서트');
+  ② Customer 테이블
+  	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('mj1234',2,'Audwls11!','이명진','1996/03/11','010-1234-1234','여자','dlsdjdmlqlc3@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('yk1234',1,'Dbsrud11!','신윤경','1998/01/01','010-2345-2345','여자','syk_1018@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('es1234',3,'Dmstjs11!','황은선','1995/04/14','010-3456-3456','여자','haesam92@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('gh1234',4,'Rmsgud11!','유근형','1994/09/18','010-4567-4567','남자','silvermarch5@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('ym1234',1,'Dudals11!','조영민','1998/03/29','010-5678-5678','남자','ehwjrdufvnd@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('aa1234',2,'Dbtls11!','김유신','1988/02/24','010-6789-6789','남자','dbtls@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('bb1234',3,'Rlfehd11!','홍길동','1988/11/29','010-7890-7890','남자','rlfehd@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('cc1234',4,'Rhkstns11!','유관순','1996/03/09','010-8901-8901','여자','rhkstns@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('dd1234',2,'Gmdals11!','손흥민','1998/04/19','010-9012-9012','남자','gmdals@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('ee1234',1,'Dusdk11!','김연아','1994/12/09','010-0123-0123','여자','dusdk@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('ff1234',3,'Tkffk11!','살라','1986/08/26','010-0987-0987','여자','tkffk@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('gg1234',4,'Dmaqkvp11!','음바페','1967/03/30','010-9876-9876','남자','dmaqkvp@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('hh1234',2,'Zkdxp11!','캉테','1945/07/30','010-8765-8765','남자','zkdxp@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('ii1234',1,'Wltjd11!','박지성','1998/05/21','010-7654-7654','여자','wltjd@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('jj1234',1,'Aptl11!','메시','1975/07/28','010-6543-6543','여자','aptl@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('kk1234',2,'Ghskfen11!','호날두','1949/11/09','010-5432-5432','남자','ghskfen@naver.com');
+	insert into customer(custid,cateid,pwd,name,birth,phone,gender,email) values('ll1234',3,'Tndkfpwm11!','수아레즈','1999/03/11','010-4321-4321','여자','tndkfpwm@naver.com');
+
+  ③ Place 테이블
+  	insert into place(placeid,seatnum) values('a',30);
+	insert into place(placeid,seatnum) values('b',10);
+	insert into place(placeid,seatnum) values('c',15);
+	
+  ④ Ticket 테이블
+    -1) 시사회
+	insert into ticket values(
+    1,1,'b',
+    '에브리씽 에브리웨어 올 앳 원스',0,'2022/11/25 15:10',
+    15,139,'다니엘 콴(감독), 양자경, 스테파니 수, 키 호이 콴',
+    '미국에 이민와 힘겹게 세탁소를 운영하던 에블린은 세무당국의 조사에 시달리던 어느 날 남편의 이혼 요구와 삐딱하게 구는 딸로 인해 대혼란에 빠진다. 그 순간 에블린은 멀티버스 안에서 수천, 수만의 자신이 세상을 살아가고 있다는 사실을 알게 되고, 그 모든 능력을 빌려와 위기의 세상과 가족을 구해야하는 운명에 처한다.',
+    'movie_EveryEveryAll.jpg','https://www.youtube.com/embed/vOXJySPfMJY',
+    'CGV 명동',37.563450,126.983350
+	);
+	insert into ticket values(
+    2,1,'c',
+    '그래비티',0,'2022/11/24 20:00',
+    12,90,'알폰소 쿠아론(감독), 산드라 블록, 조지 클루니',
+    '허블 우주망원경을 수리하기 위해 우주를 탐사하던 라이언 스톤 박사는 폭파된 인공위성의 잔해와 부딪히면서 소리도 산소도 없는 우주 한 가운데에 홀로 남겨지는데…',
+    'movie_gravity.jpg','https://www.youtube.com/embed/I9mbNcmGNQI',
+    'CGV 용산',37.529798,126.964000
+	);
+insert into ticket values(
+    3,1,'a',
+    '헤어질 결심',0,'2022/11/26 19:00',
+    15,138,'박찬욱(감독), 탕웨이, 박해일, 이정현',
+    '진심을 숨기는 용의자, 용의자에게 의심과 관심을 동시에 느끼는 형사. 그들의 <헤어질 결심>',
+    'movie_DecisionToLeave.jpg','https://www.youtube.com/embed/i50tT8n9fp8',
+    'CGV 강변',37.535774,127.095713
+);
+insert into ticket values(
+    4,1,'b',
+    '사랑할 땐 누구나 최악이 된다',0,'2022/10/23 16:00',
+    15,128,'요아킴 트리에(감독), 레나테 레인스베, 앤더스 다니엘슨 리',
+    '의학을 공부하던 스물아홉 율리에는 자신이 진짜 원하는 걸 찾아 세상으로 나온다. 파티에서 만난 만화가 악셀과 사랑에 빠진 율리에, 하지만 삶의 다른 단계에서 만난 두 사람은 각자 다른 걸 원했고 조금씩 어긋난다.',
+    'movie_TheWorstPerson.jpg','https://www.youtube.com/embed/yxkM2E0s7Ec',
+    '메가박스 성수',37.541886,127.045314
+);
+insert into ticket values(
+    5,1,'c',
+    '썸머 필름을 타고!',0,'2022/08/13 15:00',
+    0,98,'마츠모토 소우시(감독), 이토 마리카, 카와이 유미, 이노리 키라라',
+    '"이번 여름엔 너희들의 청춘을 내가 좀 쓸게." 영화도, 꿈도, 사랑도 Ready Action! 올 여름 최고의 청춘+로맨스x시대극÷SF 걸작이 온다!',
+    'movie_SummerFilm.jpg','https://www.youtube.com/embed/Hm414NvS4iQ',
+    '메가박스 코엑스',37.513073,127.058217
+);
+insert into ticket values(
+    6,1,'b',
+    '애프터 양',0,'2022/09/23 17:00',
+    0,96,'코고나다(감독), 콜린 파렐, 조디 터너 스미스',
+    '함께 살던 안드로이드 인간 양이 어느 날 작동을 멈추자 제이크 가족은 그를 수리할 방법을 찾는다. 그러던 중, 양에게서 특별한 메모리 뱅크를 발견하고 그의 기억을 탐험하기 시작하는데…',
+    'movie_AfterYang.jpg','https://www.youtube.com/embed/5OK4gAiTxnU',
+    '메가박스 백석',37.643862,126.789939
+);
+insert into ticket values(
+    7,1,'c',
+    '벌새',0,'2022/12/12',
+    15,138,'김보라(감독), 박지후, 김새벽 18:00',
+    '1994년, 알 수 없는 거대한 세계와 마주한 14살 은희의 아주 보편적이고 가장 찬란한 기억의 이야기',
+    'movie_Hummingbird.jpg','https://www.youtube.com/embed/fLbrmg8ydJc',
+    '롯데시네마 노원',37.655176,127.061305
+);
+insert into ticket values(
+    8,1,'a',
+    '고양이를 부탁해',0,'2022/12/24 16:00',
+    12,110,'정재은(감독), 배두나, 이요원, 옥지영',
+    '자유롭게 세상을 날고 싶은 엉뚱한 몽상가 태희. 사회로 첫 발을 먼저 내딛은 현실주의자 혜주. 생계를 위해 꿈은 잠시 뒤로 미뤄둔 꿈많은 모험가 지영. 친구들의 든든한 버팀목 쌍둥이 비류와 온조. 십대에 만나 모든 게 행복했고 즐거웠던 우리. 각자 다른 네 갈래 길의 스무살을 만났다. 그렇게 서로의 길로 향하던 우리에게 갑자기 나타난 고양이 한 마리. 우리를 하나의 길로 이어줄 수 있을까? 잘 있었니? 나도 네가 너무 보고 싶었어',
+    'movie_TakeCareOfMyCat.jpg','https://www.youtube.com/embed/1a6iVwbLkmw',
+    '롯데시네마 신림',37.483931,126.930227
+);
+insert into ticket values(
+    9,1,'b',
+    '옥자',0,'2022/12/07 20:00',
+    12,120,'봉준호(감독), 안서현, 변희봉, 틸다 스윈튼, 릴리 콜린스',
+    '강원도 산골 소녀 미자(안서현)에게 옥자는 10년 간 함께 자란 둘도 없는 친구이자 소중한 가족이다. 자연 속에서 평화롭게 지내던 어느 날, 글로벌 기업 미란도가 나타나 갑자기 옥자를 뉴욕으로 끌고가고, 할아버지(변희봉)의 만류에도 미자는 무작정 옥자를 구하기 위해 위험천만한 여정에 나선다. 극비리에 옥자를 활용한 슈퍼돼지 프로젝트를 추진 중인 미란도 코퍼레이션의 CEO 루시 미란도(틸다 스윈튼), 옥자를 이용해 제2의 전성기를 꿈꾸는 동물학자 죠니(제이크 질렌할), 옥자를 앞세워 또 다른 작전을 수행하려는 비밀 동물 보호 단체 ALF까지. 각자의 이권을 둘러싸고 옥자를 차지하려는 탐욕스러운 세상에 맞서, 옥자를 구출하려는 미자의 여정은 더욱 험난해져 간다.',
+    'movie_Okja.jpg','https://www.youtube.com/embed/eOdMVj1mnHE',
+    '롯데시네마 수유',37.635672,127.023803
+);
+
+    -2) 뮤지컬
+    insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(10,2,'a','킹키부츠',100000,'2022/11/25 19:00','전혀 다른 두 남자의 환상적인 팀워크! 올여름, 다시 한번 성공을 꿈꿔라! 폐업 위기에 처한 구두 공장을 물려받게 된 찰리는 생각도 스타일도 전혀 다른 아름답고 유쾌한 남자 롤라를 만나 새로운 영감을 얻고 도전을 시작한다. 남자가 신는 80cm 길이의 부츠인 킹키부츠를 함께 만들기로 한 것! 밀라노 패션쇼에서 핫하고 섹시한 킹키부츠 라인을 선보이려 하지만, 협업은 어렵기만 하다. 결국 찰리는 밀라노 런웨이에 홀로 서게 되는데... 두 남자가 함께 완성한 킹키부츠는 과연 성공할 수 있을까？','kinky.jpg','충무아트센터',19,'찰리: 김호영, 룰라: 최재림, 로렌: 김환희',180,'https://www.youtube.com/embed/EvStWwidM98',37.566005,127.014799);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(11,2,'a','마틸다',150000,'2022/11/27 19:00','마틸다는 5살 어린 나이에도 도서관의 어려운 책들을 모두 읽을 만큼 뛰어난 재능을 지닌 소녀. 그렇지만 마틸다에게 전혀 관심이 없는 부모는 오히려 마틸다가 TV를 보지 않고 책을 읽는다며 혐오하고 괴상한 아이라며 혼을 낸다.','matilda.jpg','디큐브아트센터',0,'마틸다: 임하윤, 미스 트런치불: 최재림, 미스 허니: 방진의',190,'https://www.youtube.com/embed/9lLtDny7P9M',37.509146, 126.889543); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(12,2,'a','엘리자벳',200000,'2022/11/26 20:00','“루케니, 도대체 왜? 황후 엘리자벳을 죽였습니까?” “내가 그녀를 암살한 건… 그녀가 원했기 때문이요!” 황후 엘리자벳을 암살한 혐의로 100년 동안 목이 매달려 재판을 받고 있는 루케니. 그는 판사에게 엘리자벳 스스로가 죽음을 원했으며, 일생 동안 ‘죽음’을 사랑했다고 항변한다. 루케니는 증인을 세우기 위해 그 시대의 죽은 자들을 다시 깨우며 과거의 이야기로 사람들을 불러들인다. 어린 시절 활기 넘치고 자유분방한 성격의 엘리자벳은 외줄타기를 하다가 떨어지면서 신비롭고 초월적인 존재인 ‘죽음(Der Tod)’과 처음 마주하게 된다. 엘리자벳의 아름다움에 반한 ‘죽음’은 그녀를 살려두고, 마치 그림자처럼 엘리자벳의 주위를 맴돈다','elizabeth.jpg','블루스퀘어',15,'엘리자벳: 옥주현, 죽음: 김준수, 루이지 루케니: 이지훈',200,'https://www.youtube.com/embed/pd2cgDExedE',37.541183,127.002749); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(13,2,'b','빌리엘리어트',200000,'2022/10/25 14:00','가장 아름다운 도전! 탄광촌의 소년, 꿈으로 날아오르다!! 80년대 광부 대파업 시기의 영국 북부 탄광촌을 배경으로, 복싱 수업 중 우연히 접한 발레를 통해 자신의 재능을 발견하고 꿈을 이뤄가는 소년 ‘빌리’의 여정. 꿈을 위해 역경에 맞서 싸우는 어린 소년과 가족의 유쾌하고 가슴 따뜻한 이야기가 아름다운 음악, 환상적인 춤과 절묘하게 조화를 이루며 ‘이 시대 최고의 영국 뮤지컬’이라는 찬사를 받는 뮤지컬.','billyelliot.jpg','디큐브아트센터',5,'빌리: 김시훈, 빌리 아빠: 조정근, 미세스 윌킨슨: 최정원',180,'https://www.youtube.com/embed/P8v7S1RgwSY',37.509146, 126.889543); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(14,2,'b','드라큘라',110000,'2022/10/24 17:00','유럽 클래식 레퍼토리의 품격 400년을 이어온 사랑 수세기를 뛰어넘는 아름다운 로맨티시즘의 뮤지컬 <드라큘라> 유럽 100대 베스트셀러, 브람 스토커(Bram Stoker)의 소설 원작 죽을 수 없는 형벌을 받은 비운의 남자 드라큘라의 매혹적인 스토리 체코 프라하 초연 후 전 세계 500만 관객, 체코 국민 140만명이 감동한 유럽 대형 뮤지컬의 대표작! 고전 레퍼토리에 오페라 형식의 정통성을 바탕으로 화려한 무대와 의상 감성적인 로맨티시즘을 담아낸 아름다운 넘버와 십자군, 피의 천사 앙상블들의 파워풀한 군무 400년을 뛰어넘는 서사와 시대를 표현한 무대와 연출 3년여만에 다시 돌아온 <드라큘라>를 빛낼 완벽한 캐스팅','dracula.jpg','블루스퀘어',15,'드라큘라: 신성우, 디미트루: 유승우, 반헬싱: 김준현',200,'https://www.youtube.com/embed/iUotcTK9pDQ',37.541183,127.002749); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(15,2,'b','데쓰노트',150000,'2022/10/22 20:00','법과 정의에 대해 고민하던 천재 고등학생 ‘야가미 라이토’ 어느 날 우연히 데스노트를 줍게 된다. ‘이 노트에 이름이 적힌 자는 죽는다.’ 이 문구에 뉴스 속보로 생중계된 범죄자의 이름을 노트에 적게 되는데… 노트의 엄청난 비밀을 알게 된 ‘라이토’는 자신의 손으로 범죄자를 처단하여, 정의롭고 새로운 세상을 만들어 가기로 결심한다. 세계 각지의 범죄자들이 의문의 심장마비로 사망하고 사람들은 범죄자를 처단하는 존재를 ‘키라’라고 부르며 신봉하기 시작한다.','deathnote.jpg','예술의 전당',15,'라이토: 홍광호, 엘:김준수, 렘: 장은하, 류크:강홍석',160,'https://www.youtube.com/embed/rrI7tOhoVzA',37.479410,127.013730); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(16,2,'c','시카고',160000,'2022/12/21 20:00','1920년대 재즈의 열기와 냉혈한 살인자들이 만연하던 시대의 쿡카운티 교도소는 자극적인 살인을 저지르고 언론의 관심을 한 몸에 받는 여죄수들로 가득하다. 보드빌 배우였던 벨마 켈리는 남편과 여동생을 살인하고 교도소의 간수인 마마 모튼의 도움으로 언론의 관심을 끄는 가장 유명한 죄수. 그러나 곧 나이트클럽에서 만난 정부 프레드 케이슬리를 살해한 죄로 교도소에 들어온 코러스 걸 록시 하트가 자신의 유명세를 빼앗아가고 언변술과 임기응변에 능한 돈을 쫓는 변호사 빌리 플린마저 빼앗아가자 벨마는 분개한다. ','chicago.jpg','디큐브아트센터',19,'벨마: 최정원, 록시: 아이비, 빌리: 최재림',180,'https://www.youtube.com/embed/G0ZuPjha-c8', 37.509146, 126.889543); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(17,2,'c','아이다',80000,'2022/12/30 14:00','현대 박물관의 이집트관. 고대 왕국의 여왕이었던 암네리스가 이집트와 그 이웃 나라였던 누비아 사이의 전쟁이 최고조에 달했던 시대의 투쟁과 그 안에서 꽃피었던 사랑 이야기로 관객들을 초대한다. 이집트의 사령관인 라다메스는 나일강에서 고향으로 향하던 항해를 준비하던 중, 그의 군인들이 포획한 누비아 포로들 중에서 고귀하고 용감한 여인 아이다에게 관심을 갖게 되고, 그에게 끊임없이 반항하는 그녀의 모습이 특별하게 각인된다. ','aida.jpg','블루스퀘어',10,'아이다: 윤공주, 암네리스: 아이비, 라마메스: 최재림',190,'https://www.youtube.com/embed/gc-zFn7KKks',37.541183,127.002749); 
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,content,img_fname,loc,min_age,cast,runtime,vid_url,lat,lng) values(18,2,'c','레베카',90000,'2022/12/09 15:00','불의의 사고로 아내 레베카를 잃고 힘든 나날을 보내고 있는 막심 드 윈터, 그는 몬테카를로 여행 중 우연히 ‘나’를 만나 사랑에 빠지게 된다. 행복한 결혼식을 올린 두 사람은 막심의 저택인 맨덜리에서 함께 생활하게 되는데…','rebecca.jpg','충무아트센터',5,'댄버스 부인: 옥주현, 막심 드 윈터: 민영기, 나: 임혜영',200,'https://www.youtube.com/embed/Y_57Ej3LjYA',37.566005,127.014799); 
+	    
+    -3) 연극
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    19,3,'c',
+    'ART',40000,'2022/11/23 19:00',
+    15,100,'이순재,박은석,노주현,백일섭',
+    'ART_INFO.jpg',
+    'ART.png',
+    '예스24스테이지 1관',37.582760,127.003266
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    20,3,'c',
+    '가면산장_살인사건',77000,'2022/11/24 18:00',
+    12,110,'최정헌,한다미,반소영',
+    '인질과 강도 사이의 숨 막히는 줄다리기 그리고 서스펜스가 클라이막스에 달한 순간 벌어지는 대반전!',
+    '가면산장 살인사건.png',
+    '이화여대 삼성홀',37.561556,126.946705
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    21,3,'a',
+    '연극라면',40000,'2022/11/25 19:00',
+    12,110,'이재형,최수연,이대은',
+    '고등학교때부터 만나온 만수와 은실. 만수는 잘다니던 직장을 그만두고 라면집을 차리겠다고 한다.',
+    '연극라면.png',
+    '대학로 해피씨어터',37.581888,127.002572
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    22,3,'b',
+    '오_나의_귀신님',40000,'2022/11/01 20:00',
+    15,100,'신한솔,김지온,지혜연',
+    '사랑에 상처받고 그 충격에 기억상실까지! 깨어나보니 낯선 남자의 집?',
+    '오 나의 귀신님.png',
+    '여우별아트홀',35.866974,128.597434
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    23,3,'c',
+    '오만과_편견',55000,'2022/11/02 20:00',
+    12,150,'이경미,홍우진',
+    '온순하고 마음이 착하며 내성적인 성격의 첫째 제인 솔직하고 거침없는 성품으로 진정한 사랑에 대한 낭만을 품고 있는 둘째 엘리자베스(리지)',
+    '오만과 편견.png',
+    '예스24스테이지 3관',37.582760,127.003266
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    24,3,'a',
+    '오백에삼십',40000,'2022/11/03 19:00',
+    15,110,'김윤섭,고연경,이한울',
+    '다닥다닥 붙어서 살지만 옆집에 누가 사는지도 모르고 서로에게 무관심한 세상..',
+    '오백에삼십.png',
+    '아트플러스씨어터',35.869347,128.598193
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    25,3,'b',
+    '옥탑방_고양이',40000,'2023/01/08 20:00',
+    15,100,'강이성,윤주희,김윤환',
+    '이중계약으로 시작된 한 지붕 두 남녀의 로맨틱한 청춘 로맨스!',
+    '옥탑방 고양이.png',
+    '대구 송죽씨어터',35.873434,128.595471
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    26,3,'a',
+    '서툰_사람들',55000,'2023/02/19 18:00',
+    12,100,'임모윤,최하윤,이철민',
+    '쏟아지는 학교 업무가 버거워도 자신만의 보금자리에서 힘차게 살아가는 화이, 온 동네 열쇠 구멍을 호시탐탐 노리는 어설픈 도둑 덕배..',
+    '서툰 사람들.png',
+    '예스24스테이지 3관',37.582760,127.003266
+	);
+	insert into ticket(ticketid,cateid,placeid,ticket_name,price,ticket_date,min_age,runtime,cast,content,img_fname,loc,lat,lng) values(
+    27,3,'b',
+    '한뼘사이',50000,'2022/11/30 19:00',
+    15,100,'강단비,정태영,강민주',
+    '날 좋아하는 거야 뭐야? 연인인 듯 친구인 듯.. 나만 설레는 건가? 무뚝뚝한 여자와 썸을 넘지 못하는 답답한 남자의 만남',
+    '한뼘사이.png',
+    '라온아트홀',37.581811,127.002756
+	);
+	
+	 -4) 콘서트
+	insert into ticket values(
+	28,
+	4,
+	'c',
+	'radio_dept',
+	50000,
+	'2022/11/30 14:00',
+	12,
+	150,
+	'라디오 디파트먼트',
+	'나무위키에 항목도 없는 애들이 올림픽 체조경기장에? 힙스터들 다 모여라',
+	'radio_dept.jpg',
+	'https://www.youtube.com/embed/r0FoVuUYh4w',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	29,
+	4,
+	'c',
+	'black_pink',
+	1500000,
+	'2022/11/27 19:00',
+	12,
+	150,
+	'블랙핑크',
+	'K/POP 3세대 대표 아이돌 그룹 중 하나로서, 해외와 빌보드 메인 차트에서 많은 기록을 세우고 있는 세계적인 걸그룹 블랙핑크 월드투어',
+	'blackpink.jpg',
+	'https://www.youtube.com/embed/gQlMMD8auMs',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	30,
+	4,
+	'c',
+	'maroon_five',
+	150000,
+	'2022/11/30 20:00',
+	12,
+	120,
+	'마룬 파이브',
+	'비긴어게인이랑 라라랜드 OST 들으러 오세요',
+	'maroon_five.jpg',
+	'https://www.youtube.com/embed/09R8_2nJtjg',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	31,
+	4,
+	'c',
+	'oohyo',
+	150000,
+	'2022/10/28 19:00',
+	12,
+	120,
+	'우효',
+	'요즘 잘 안 보이는 우효 누나 보러 오세요',
+	'oohyo.jpg',
+	'https://www.youtube.com/embed/qr9i9jRuTug',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	32,
+	4,
+	'c',
+	'kpop_dream',
+	'5000000',
+	'2022/06/18 19:00',
+	12,
+	150,
+	'아이브, NCT Dream, 레드벨벳, 오마이걸 등',
+	'케이팝 가수가 한자리에',
+	'kpop_dream.jpg',
+	'https://www.youtube.com/embed/Imn3_FEABp8',
+	'고척스카이돔',
+	37.498239,
+	126.867049
+	);
+	insert into ticket values(
+	33,
+	4,
+	'c',
+	'nahoona',
+	10000000,
+	'2021/12/25 12:00',
+	12,
+	240,
+	'나훈아',
+	'자식들 주목! 부모님 연말 선물에 딱! 눈앞에서 테스형 보자!',
+	'nahoona.jpg',
+	'https://www.youtube.com/embed/8cNz9awcVqg',
+	'롯데 시그니엘 30층 디너홀',
+	37.513733,
+	127.104417
+	);
+	insert into ticket values(
+	34,
+	4,
+	'c',
+	'kanye_west',
+	500000,
+	'2022/12/25 18:00',
+	19,
+	240,
+	'칸예 웨스트',
+	'세계로부터 버림받은 비운의 천재 칸예 웨스트 한국 상륙!',
+	'kanye.jpg',
+	'https://www.youtube.com/embed/IPgKnmXV09c',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	35,
+	4,
+	'c',
+	'frank_ocean',
+	1000000,
+	'2023/01/01 19:00',
+	19,
+	180,
+	'프랭크 오션',
+	'앨범 안 내고 은둔하던 프랭크 오션 서울 한복판에서 발견?! 배은망덕한 낯짝 한 번 보러가자',
+	'frank.jpg',
+	'https://www.youtube.com/embed/Hzi7-Wy58Fw',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	insert into ticket values(
+	36,
+	4,
+	'c',
+	'tyler_the_creator',
+	1200000,
+	'2023/01/07 20:00',
+	19,
+	180,
+	'타일러 더 크리에이터',
+	'그래미 수상자 서울 입성! 칸예야 프랭크야 기다려라!',
+	'tyler.jpg',
+	'https://www.youtube.com/embed/HmAsUQEFYGI',
+	'올림픽 공원 체조경기장',
+	37.519198,
+	127.127388
+	);
+	
+	5. seat 테이블
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(1,'a',19,'y','a1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(2,'a',19,'n','a2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(3,'a',19,'n','a3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(4,'a',19,'n','a4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(5,'a',19,'n','a5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(6,'a',19,'n','a6');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(7,'a',19,'n','b1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(8,'a',19,'n','b2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(9,'a',19,'n','b3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(10,'a',19,'n','b4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(11,'a',19,'n','b5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(12,'a',19,'n','b6');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(13,'a',19,'n','c1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(14,'a',19,'n','c2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(15,'a',19,'n','c3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(16,'a',19,'n','c4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(17,'a',19,'n','c5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(18,'a',19,'n','c6');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(19,'a',19,'n','d1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(20,'a',19,'n','d2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(21,'a',19,'n','d3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(22,'a',19,'n','d4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(23,'a',19,'n','d5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(24,'a',19,'n','d6');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(25,'a',19,'n','e1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(26,'a',19,'n','e2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(27,'a',19,'n','e3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(28,'a',19,'n','e4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(29,'a',19,'n','e5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(30,'a',19,'n','e6');
+	
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(31,'b',1,'n','a1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(32,'b',1,'n','a2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(33,'b',1,'n','a3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(34,'b',1,'n','a4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(35,'b',1,'n','a5');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(36,'b',1,'n','b1');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(37,'b',1,'n','b2');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(38,'b',1,'n','b3');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(39,'b',1,'n','b4');
+	insert into seat(seatid,placeid,ticketid,check_seat,seatname) values(40,'b',1,'n','b5');
+	
+	6. review 테이블
+	insert into review(reviewid,custid,ticketid,score,review_content) values(1,'mj1234',10,4,'몰입감 최고! 팝콘 2개 필수!');
+	insert into review(reviewid,custid,ticketid,score,review_content) values(2,'yk1234',11,3.5,'가벼운 오락거리로 보기 좋아요.');
+	insert into review(reviewid,custid,ticketid,score,review_content) values(3,'gh1234',12,5,'늘 최고에요!');
+
+	7. book 테이블
+	insert into book(bookid,custid,ticketid,seatid) values(1,'mj1234',10,1);
+	
+	8. draw 테이블
