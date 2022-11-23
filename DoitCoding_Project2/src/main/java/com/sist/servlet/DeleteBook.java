@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sist.dao.CustomerDAO;
+import com.sist.dao.BookDAO;
 
 /**
- * Servlet implementation class LoginCustomer
+ * Servlet implementation class DeleteBook
  */
-@WebServlet("/LoginCustomer")
-public class LoginCustomer extends HttpServlet {
+@WebServlet("/DeleteBook")
+public class DeleteBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginCustomer() {
+    public DeleteBook() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,20 +30,14 @@ public class LoginCustomer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String custid = request.getParameter("custid");
-		String pwd = request.getParameter("pwd");
-		boolean login_Flag;
+		BookDAO bookdao = BookDAO.getInstance();
+		int bookid = Integer.parseInt(request.getParameter("bookid"));
 		
-		System.out.println("custid :"+ custid);
-		System.out.println("pwd : " +pwd);
-		
-		CustomerDAO customerdao = CustomerDAO.getInstance();
-		
-		login_Flag = customerdao.login(custid, pwd);
+		int re = bookdao.deleteBook(bookid);
 		
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
-		out.print(login_Flag);
+		out.print(re);
 		out.close();
 		
 	}

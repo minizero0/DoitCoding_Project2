@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	body{
+		background-color : rgba(0, 0, 0, 0.3);
+	}
+	*{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	}	
+	a{
+		text-decoration: none;
+	}	
+	div{
+		 position: absolute;
+		  top:50%;
+		  left: 50%;
+		  transform: translate(-50% , -50%)
+	}
+</style>
+<!-- 좌석 -->
+<style type="text/css">
+	#background{
+		width : 600px;  height : 450px;
+		background-color : white;
+		border : 2px solid gray;
+		border-radius : 10px 10px 10px 10px;
+	}
+	button{
+		margin-top : 50px;
+		width : 35px;  height : 35px;
+		margin : 5px;
+		border-radius : 10px 10px 10px 10px;
+		border : none;
+		background-color : #08348C;
+		color : white;
+	}
+</style>
+<!-- 마우스효과 -->
+<style type="text/css">
+	button.hover:hover:not(.x){
+		background-color : #F2AE30;
+	}
+	button.active:not(.x){
+		background-color : #F2AE30;
+		color : #08348C;
+		font-weight : 700;
+	}
+	.x{
+		background-color : #dcdcdc;
+		color : gray;
+	}
+	#insertBtn{
+		width : 100px; height : 35px;
+		position : absolute;
+		margin-top : 380px;
+		margin-left : 250px;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var ticketid = Number(sessionStorage.getItem("ticketid"));
+		var custid = sessionStorage.getItem("custid");
+		var seatname;
+		$(document).on("click",".hover",function(){
+			seatname = $(this).html(); 
+			console.log("자리번호:"+seatname)
+			  $("button").removeClass("active");
+			  $(this).addClass("active");
+		})
+		
+		//seat테이블에서 좌석정보를 가져오기
+		
+		$.ajax({
+			url:"ListSeat",
+			data:{ticketid:19},
+			success:function(data){	
+				var count = 0;
+				$.each(data, function(){
+					
+                    var btn = $("<button></button>").html(this.seatname);
+                    if(this.check_seat == "y")
+                        btn.addClass("x");
+                    else{
+                    	btn.addClass("hover");
+                    }
+                    $("#seatList").append(btn);
+                    count++;
+                    if(count % 6 == 0){
+						$("#seatList").append($("<br></br>"));
+					}
+                })
+			}
+		})
+		
+		$("#insertBtn").click(function(){
+			var data = {
+					ticketid:ticketid,
+					custid:custid,
+					seatname:seatname
+			}
+			$.ajax({
+				url:"RegistBook",
+				data:data,
+				success:function(as){
+					if(as == 2){
+						$(location).attr('href',"mainTest.html");
+					}
+					console.log(as);
+				}
+			})
+		})
+		
+		
+	});
+</script>
+</head>
+<body>
+	<div id="background">
+	<button id = "insertBtn">예매하기</button>
+	</div>
+	<div id="seatList"></div>
+	
+	
+</body>
+</html>

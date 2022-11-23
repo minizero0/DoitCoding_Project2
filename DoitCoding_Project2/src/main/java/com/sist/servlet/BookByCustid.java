@@ -2,6 +2,7 @@ package com.sist.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,19 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sist.dao.CustomerDAO;
+import com.google.gson.Gson;
+import com.sist.dao.TicketDAO;
+import com.sist.vo.BookByCustidVO;
 
 /**
- * Servlet implementation class LoginCustomer
+ * Servlet implementation class BookByCustid
  */
-@WebServlet("/LoginCustomer")
-public class LoginCustomer extends HttpServlet {
+@WebServlet("/BookByCustid")
+public class BookByCustid extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginCustomer() {
+    public BookByCustid() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,22 +33,18 @@ public class LoginCustomer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		TicketDAO ticketdao = TicketDAO.getInstance();
 		String custid = request.getParameter("custid");
-		String pwd = request.getParameter("pwd");
-		boolean login_Flag;
 		
-		System.out.println("custid :"+ custid);
-		System.out.println("pwd : " +pwd);
+		ArrayList<BookByCustidVO> list = ticketdao.selectTicketByCustid(custid);
 		
-		CustomerDAO customerdao = CustomerDAO.getInstance();
+		Gson gson = new Gson();
+		String str = gson.toJson(list);
 		
-		login_Flag = customerdao.login(custid, pwd);
-		
-		response.setContentType("text/plain");
+		response.setContentType("application/json;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		out.print(login_Flag);
+		out.print(str);	
 		out.close();
-		
 	}
 
 	/**

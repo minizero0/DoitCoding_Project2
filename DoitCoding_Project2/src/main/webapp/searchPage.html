@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="searchPage.css">
+<meta name="viewport" content="user-scalable=yes, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script>
+	$(function(){
+		
+		var keyword = sessionStorage.getItem("keyword");
+		var p = $("<p></p>");
+		var span = $("<span></span>").html("'"+keyword+"'에 대한 검색 결과입니다");
+		$(p).append(span);
+		$("#search_title").append(p);
+		
+		// 검색 결과에 따른 목록 출력
+		var selectTicket = function(){ 
+			$.ajax("SearchTicket", {
+				data:{keyword:keyword},
+				success:function(arr){
+					for (var i = 0; i < arr.length; i++) {		
+						var div = $("<div></div>").addClass("search_result");
+						var a = $("<a></a>").attr({
+							ticketid: arr[i].ticketid,
+							id: "preview"+i,
+							href:"detailTest.html?ticketid="+arr[i].ticketid
+						});
+							var img = $("<img>").attr({
+								src: "images/"+arr[i].img_fname,
+								width : 200,
+								height: 251
+							});
+						var title = $("<h2></h2>").html(arr[i].ticket_name);
+						
+						var ul = $("<ul></ul>");
+						
+							var cast = $("<li></li>").html(arr[i].cast);
+							var ticket_date = $("<li></li>").html(arr[i].ticket_date);
+							var runtime = $("<li></li>").html(arr[i].runtime);
+							var loc = $("<li></li>").html(arr[i].loc);
+						
+						$(ul).append(cast, ticket_date, runtime, loc);
+						$(a).append(img);
+						$(div).append(a,title,ul);
+						$("#search_all").append(div);
+						
+						// 이미지 클릭하면 detail 페이지로
+						
+						var preview_id = '#preview'+i
+						
+						$(document).on('click', preview_id, function(e){
+							var target = this.id;
+							console.log(target);
+							var ticketid = $("#"+target).attr("ticketid");
+							sessionStorage.setItem("ticketid", '');
+							sessionStorage.setItem("ticketid", ticketid);
+						});
+						
+					}
+				}
+			}); // ajax 끝
+		}// selectTIcket end
+		
+		selectTicket();
+		
+	}); // 전체 funtion end
+
+</script>
+</head>
+<body class="mypage_layout">
+ 		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
+ 		<div class="main_user">
+ 				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="myPage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 		</div>
+ 	    <nav id="navigation">
+              <form action="" method="post" class="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력...">
+				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </form>
+              <ul>
+                  <li class="home"><a href="mainTest.jsp">홈</a></li>
+                  <li><a href="#">시사회</a></li>	
+                  <li><a href="#">연극</a></li>
+                  <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">콘서트</a></li>
+             </ul>
+        </nav>
+       <hr>
+		<div id="search_title">
+ 			
+       </div>
+       <div id="search_all">
+		</div>
+  	  <div id="main-footer">
+		<footer>
+			<div>Footer</div>
+		</footer>
+	</div>	  
+</body>
+</html>

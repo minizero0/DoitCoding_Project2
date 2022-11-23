@@ -15,6 +15,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.sist.vo.BookByCustidVO;
 import com.sist.vo.TicketVO;
 
 public class TicketDAO {
@@ -172,11 +173,10 @@ public class TicketDAO {
 	
 	
 	//특정 티켓 내역 출력
-	public TicketVO findById(int ticketid) {
-		System.out.println(ticketid);
+	public ArrayList<TicketVO> findByIdList(int ticketid) {
 		TicketVO t = null;
+		ArrayList<TicketVO> list = new ArrayList<TicketVO>();
 		String sql = "select * from ticket where ticketid=?";
-		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -204,6 +204,7 @@ public class TicketDAO {
 				t.setLoc(rs.getString("loc"));
 				t.setLat(rs.getDouble("lat"));
 				t.setLng(rs.getDouble("lng"));
+				list.add(t);
 			}
 		} catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
@@ -212,7 +213,7 @@ public class TicketDAO {
 			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
 			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
 		}
-		return t;
+		return list;
 	}
 	
 	//현재 날짜 리턴하는 메소드
@@ -232,12 +233,12 @@ public class TicketDAO {
 		// 현재 시간
         LocalTime now = LocalTime.now();
         // 현재시간 출력
-        //System.out.println(now);  // 06:20:57.008731300
+        System.out.println(now);  // 06:20:57.008731300
         // 포맷 정의하기
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초");
         // 포맷 적용하기
         String formatedNow = now.format(formatter);
-        //System.out.println("현재:"+formatedNow);
+        
 		return formatedNow;
 	}
 	
@@ -247,17 +248,13 @@ public class TicketDAO {
 		String sql = "select count(*) from seat where ticketid = ? and check_seat= 'n'";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		try {
 			Context context = new InitialContext();
 			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, ticketid);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				num = rs.getInt(1);
-			}
+			num = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		} finally {
@@ -304,6 +301,152 @@ public class TicketDAO {
 		} finally {
 			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
 			if(stmt != null) {try {stmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return list;
+	}
+	
+	// 메인페이지에서 카테고리 별로 현재 상영작, 미래 상영작 출력하기
+	public ArrayList<TicketVO> selectTicketByCategory(int time, int cateid){
+		ArrayList<TicketVO> list = new ArrayList<TicketVO>();
+
+		// time = 0이면 과거 상영작, 1이면 현재 상영작, 2이면 미래 상영작
+		
+		String sql = "";
+		
+		if(time == 0) { // 과거
+			sql = "select * from ticket where cateid=? and ticket_date < to_char(sysdate, 'yyyy/mm/dd')";
+		}
+		
+		else if(time == 2) { //미래
+			sql = "select * from ticket where cateid=? and ticket_date > to_char(sysdate+7, 'yyyy/mm/dd')";
+		}
+		else if(time==1){ //현재
+			sql = "select * from ticket where cateid=? and ticket_date > to_char(sysdate, 'yyyy/mm/dd') and ticket_date <= to_char(sysdate+7, 'yyyy/mm/dd')";
+		}
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+	
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cateid);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				TicketVO t = new TicketVO();
+				t.setTicketid(rs.getInt("ticketid"));
+				t.setCateid(rs.getInt("cateid"));
+				t.setPlaceid(rs.getString("placeid"));
+				t.setTicket_name(rs.getString("ticket_name"));
+				t.setPrice(rs.getInt("price"));
+				t.setTicket_date(rs.getString("ticket_date"));
+				t.setMin_age(rs.getInt("min_age"));
+				t.setRuntime(rs.getInt("runtime"));
+				t.setCast(rs.getString("cast"));
+				t.setContent(rs.getString("content"));
+				t.setImg_fname(rs.getString("img_fname"));
+				t.setVid_url(rs.getString("vid_url"));
+				t.setLoc(rs.getString("loc"));
+				t.setLat(rs.getDouble("lat"));
+				t.setLng(rs.getDouble("lng"));
+				list.add(t);
+			}
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return list;
+	}
+	
+	public TicketVO findById(int ticketid) {
+		TicketVO t = null;
+		String sql = "select * from ticket where ticketid=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ticketid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				t = new TicketVO();
+				t.setTicketid(rs.getInt("ticketid"));
+				t.setCateid(rs.getInt("cateid"));
+				t.setPlaceid(rs.getString("placeid"));
+				t.setTicket_name(rs.getString("ticket_name"));
+				t.setPrice(rs.getInt("price"));
+				t.setTicket_date(rs.getString("ticket_date"));
+				t.setMin_age(rs.getInt("min_age"));
+				t.setRuntime(rs.getInt("runtime"));
+				t.setCast(rs.getString("cast"));
+				t.setContent(rs.getString("content"));
+				t.setImg_fname(rs.getString("img_fname"));
+				t.setVid_url(rs.getString("vid_url"));
+				t.setLoc(rs.getString("loc"));
+				t.setLat(rs.getDouble("lat"));
+				t.setLng(rs.getDouble("lng"));
+			}
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return t;
+	}
+	
+	public ArrayList<BookByCustidVO> selectTicketByCustid (String custid){
+		ArrayList<BookByCustidVO> list = new ArrayList<>();
+		BookByCustidVO vo = null;
+		String sql = "select custid, ticket_name, img_fname, t.ticketid, s.seatid, b.bookid, ticket_date, loc, seatnum, seatname "
+				+ "from ticket t, book b, seat s, place p "
+				+ "where t.ticketid=b.ticketid and b.seatid = s.seatid and s.placeid = p.placeid "
+				+ "and custid=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, custid);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new BookByCustidVO();
+				
+				vo.setBookid(rs.getInt("bookid"));
+				vo.setCustid(rs.getString("custid"));
+				vo.setImg_fname(rs.getString("img_fname"));
+				vo.setLoc(rs.getString("loc"));
+				vo.setSeatid(rs.getInt("seatid"));
+				vo.setSeatname(rs.getString("seatname"));
+				vo.setSeatnum(rs.getInt("seatnum"));
+				vo.setTicket_date(rs.getString("ticket_date"));
+				vo.setTicket_name(rs.getString("ticket_name"));
+				vo.setTicketid(rs.getInt("ticketid"));
+				
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
 			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
 		}
 		return list;

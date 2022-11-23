@@ -17,7 +17,7 @@ import com.sist.vo.TicketVO;
 /**
  * Servlet implementation class TicketData
  */
-@WebServlet("/ticketdata")
+@WebServlet("/TicketData")
 public class TicketData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,6 +34,7 @@ public class TicketData extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		TicketDAO dao = TicketDAO.getInstance();
 		TicketVO t = dao.findById(Integer.parseInt(request.getParameter("ticketid")));
+		
 		response.setContentType("application/json;charset=utf-8");
 		Gson gson = new Gson();
 		PrintWriter out = response.getWriter();

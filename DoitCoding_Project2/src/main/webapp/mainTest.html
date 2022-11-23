@@ -3,227 +3,413 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 초기화하기 -->
-<style type="text/css">
-	.main_layout{
-        width:1380px;
-		margin : auto;
-    }
-	*{
-		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	}	
-	a{
-		text-decoration: none;
-	}	
-	li{
-		list-style: none;
+<meta name="viewport" content="user-scalable=yes, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="mainTest.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var width = $("[data-role='slider']").attr("data-width");
+	var height = $("[data-role='slider']").attr("data-height");
+	var count = $("[data-role='slider'] div.item").length;
+		
+	$("[data-role='slider']").css({
+		position:"relative",
+		overflow:'hidden',
+		width:width,
+		height:height		
+	}).find(".container").css({
+		position:'absolute',
+		width:count*width,
+		overflow:'hidden'
+	}).find(".item").css({
+		width:width,
+		height:height,
+		float:'left'
+	});
+	
+	var currentPage = 0;
+	var changePage = function(){
+		$("[data-role='slider'] > .container").animate({
+			left:-currentPage * width
+		},500);
 	}
-</style>
-<!-- 상단 구성하기 -->
-<style type="text/css">
-	#logo{
-		width: 370px;
-		height: 110px;
-		padding-top : 5px;
-	}
-	.main_user{
-		float : right;
-		padding-top : 60px;
-		padding-right : 15px;
-	}
-	.main_user a{
-		color : #091140;
-		position : relative;
-		font-size : 11px;
-		font-style : bold;
-		margin :-18px;
-		padding-right : 20px;
-	}
-	.main_user img{
-		position : relative;
-		width : 46px;
-		height : 45px;
-		bottom : 15px;
-		left : 47px;
-	}
-	#login{
-		right : 7px;
-		bottom : 1px;
-	}
-	#login img{
-		padding-right : 6px;
-	}
-	.search{
-		overflow : hidden;
-		position: relative;
-  		top: 6px;
-  		right : 15px;
-		float : right;
-		width : 250px;
-		height : 40px; 
-      	border : 2px solid white; 
-      	border-radius : 25px 25px 25px 25px;
-	}
-	.search_txt{
-		position: relative;
-		color : white;
-		top: -10px;
-  		right : -15px;
-		width : 175px;
-		height : 30px; 
-		border: none; 
-		font-size : 13px;
-		background-color:rgba(255, 255, 255, 0);
-	}
-	.search_btn{
-		position : relative;
-  		right : -25px;
-	}
-</style>
-<!-- main-header 구성하기 -->
-<style type="text/css">
-	#navigation{
-		position: sticky;
-		top: 0;
-	}	
-	#navigation ul{
-		background-color : #08428C;
-		border-radius : 5px 5px 0px 0px;
-		list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	}
-	#navigation ul:after{
-	    content:'';
-	    display: block;
-	    clear:both;
-	}
-	#navigation ul > li{
-		list-style : none;
-		display: inline-block;
-	    text-align: center;
-	    padding: 14px 45px;
-	}
-	#navigation li.home a{
-		color: #F2AE30;
-		font-weight : 600;
-		font-size : 17px;
-	}
-	#navigation li > a{
-		font-size : 16px;
-		color : white;
-		height: 100px;
-		text-decoration: none;
-		line-height : 30px;
-	}
-	#navigation li:hover:not(.home){
-		transition-duration: 0.4s;
-		border-bottom: 5px solid #F2AE30;
-		padding-bottom : 9px;
-	}
-	#navigation ul li:hover ul {
-		display: block;
-	}
-	#poster1{
-		max-width: 100%;
-		width: 1400px;
-		height: 570px;
-		display : block;
-	}
-	hr{
-		border : 0;
-		height : 2.5px;
-		background-color : #08348C;
-	}
-</style>
-<!-- 본문 구성하기 -->
-<style type="text/css">
-	#main-content h2{
-		padding-left : 10px;
-		color : #F2AE30;	
-	}
-	#main-content ul{
-		text-align : center;
-	}
-	#main-content ul>li{
-		float : left;
-		border : 1.5px solid #dcdcdc; 
-      	border-radius : 25px 25px 25px 25px;
-      	width : 80px;
-      	height : 25px;
-      	padding : 5px;
-      	margin-right : 15px;
-	}
-	#main-content li a{
-		font-size : 14px;
-		color : #091140;
-		height: 100px;
-		text-decoration: none;
-	}
-	#main-content li:hover{
-		transition-duration: 0.5s;
-		background: #08428C;
-	}
-	#main-content li:hover a{
-		color : white;
-	}
-</style>
-<!-- footer 구성하기 -->
-<style type="text/css">
-	#main-footer{
-		padding-top: 100px;
-	}
-	footer{
-		line-height: 100px;
-		background: #08428C;
-		color: white;
-		font-size: 14px;
-		text-align: center;
-	}
-</style>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script >
-	$(function(){
-		var str = sessionStorage.getItem("custid");			//로그인된 아이디 가져오기
+	
+	$("#left_button").click(function(){
+		if(currentPage>0){
+			currentPage = currentPage - 1;
+			changePage();
+		}
+	});
+	
+	$("#right_button").click(function(){
+		if(currentPage < count-1  ){
+			currentPage = currentPage + 1;
+			changePage();
+		}
+	});
+	
+	// 랭킹 출력
+	var selectRankingBycategory = function(){
+		$.ajax("RankingTicket", {
+			data:{cateid:cateid},
+			success:function(arr){
+				console.log(arr);
+				$("#rank_preview0").empty();
+				$("#rank_preview1").empty();
+				$("#rank_preview2").empty();
+				for(var i=0; i<=2; i++){
+					var img = $("<img>").attr({
+						src: "images/"+arr[i].img_fname,
+						width : 300,
+						height: 400
+					});
+					$("#rank_preview"+i).attr('ticketid', arr[i].ticketid);
+					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					$("#rank_preview"+i).attr('href', url);
+					$("#rank_preview"+i).append(img);
+					
+					// 이미지 누르면 detail 페이지로
+					var rank_preview = '#rank_preview'+i;
+					
+					$(document).on('click', rank_preview, function(){
+						var target = this.id;
+						var ticketid = $("#"+target).attr("ticketid");
+						sessionStorage.setItem("ticketid", '');
+						sessionStorage.setItem("ticketid", ticketid);
+					});
+				}
+			}
+		});
+	}// 랭킹 출력 end
+	
+	// 현재 상영작 출력
+	var selectCurrentBycategory = function(){
+		
+		$.ajax("SelectTicketMain", {
+			data:{time:1, cateid:cateid},
+			success:function(arr){
+				$("#current_preview0").empty();
+				$("#current_preview1").empty();
+				$("#current_preview2").empty();
+				for(var i=0; i<=2; i++){
+					var img = $("<img>").attr({
+						src: "images/"+arr[i].img_fname,
+						width : 300,
+						height: 400,
+					});
+					$("#current_preview"+i).attr('ticketid', arr[i].ticketid);
+					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					$("#current_preview"+i).attr('href', url);
+					$("#current_preview"+i).append(img);
+					
+					// 이미지 누르면 detail 페이지로
+					var current_preview = '#current_preview'+i;
+					
+					$(document).on('click', current_preview, function(){
+						var target = this.id;
+						var ticketid = $("#"+target).attr("ticketid");
+						sessionStorage.setItem("ticketid", '');
+						sessionStorage.setItem("ticketid", ticketid);
+					});	
+				}
+			}
+		}); 
+	}//현재 상영작 출력 end
+	
+	// 미래상영작 출력
+	var selectFutureBycategory = function(){
+		$.ajax("SelectTicketMain", {
+			data:{time:2, cateid:cateid},
+			success:function(arr){			
+				$("#future_preview0").empty();
+				$("#future_preview1").empty();
+				$("#future_preview2").empty();
+				for(var i=0; i<=2; i++){
+					var img = $("<img>").attr({
+						src: "images/"+arr[i].img_fname,
+						width : 300,
+						height: 400
+					});
+					$("#future_preview"+i).attr('ticketid', arr[i].ticketid);
+					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					$("#future_preview"+i).attr('href', url);
+					$("#future_preview"+i).append(img);
+					
+					// 이미지 누르면 detail 페이지로
+					var future_preview = '#future_preview'+i;
+					
+					$(document).on('click', future_preview, function(){
+						var target = this.id;
+						var ticketid = $("#"+target).attr("ticketid");
+						sessionStorage.setItem("ticketid", '');
+						sessionStorage.setItem("ticketid", ticketid);
+					});
+				}
+			}
+		});
+	} //미래상영작 출력 end
+	
+	
+	var cateid = 2; // review 테이블에 카테고리가 연극인 것 외에는 인스턴스가 없으므로 기본값을 2로 설정함
+	
+		selectRankingBycategory();
+		selectCurrentBycategory();
+		selectFutureBycategory();
+		
+	// 랭킹에서 카테고리 클릭
+	$(document).on('click', '#rank_cate1', function(){
+		cateid =1;
+		selectRankingBycategory();
+	});
+	$(document).on('click', '#rank_cate2', function(){
+		cateid =2;
+		selectRankingBycategory();
+	});
+	$(document).on('click', '#rank_cate3', function(){
+		cateid =3;
+		selectRankingBycategory();
+	});
+	$(document).on('click', '#rank_cate4', function(){
+		cateid =4;
+		selectRankingBycategory();
+	});
+	
+	// 현재 상영작 카테고리 클릭
+	$(document).on('click', '#current_cate1', function(){
+		cateid = 1;
+		selectCurrentBycategory();
 	})
+	$(document).on('click', '#current_cate2', function(){
+		cateid = 2;
+		selectCurrentBycategory();
+	})
+	$(document).on('click', '#current_cate3', function(){
+		cateid = 3;
+		selectCurrentBycategory();
+	})
+	$(document).on('click', '#current_cate4', function(){
+		cateid = 4;
+		selectCurrentBycategory();
+	})
+	
+	// 미래 상영작 카테고리 클릭
+	$(document).on('click', '#future_cate1', function(){
+		cateid = 1;
+		selectFutureBycategory();
+	})
+	$(document).on('click', '#future_cate2', function(){
+		cateid = 2;
+		selectFutureBycategory();
+	})
+	$(document).on('click', '#future_cate3', function(){
+		cateid = 3;
+		selectFutureBycategory();
+	})
+	$(document).on('click', '#future_cate4', function(){
+		cateid = 4;
+		selectFutureBycategory();
+	})
+	
+	// 네비게이션 바에서 클릭하면 카테고리별 목록으로 넘어가도록
+		var time = 1;
+	
+	var cate_current = "";
+	var cate_future = "";
+	var cate_past = "";
+
+	for (var i = 1; i <=4; i++) {
+		cate_current = '#cate'+i+"_current";
+		cate_future = '#cate'+i+"_future";
+		cate_past = '#cate'+i+"_past";
+		
+		$(cate_current).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+		
+		$(cate_future).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+		
+		$(cate_past).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+	}
+
+	// 검색하면 결과가 나오도록
+	var searchKeyword = function(f){
+		$("#search_txt").keydown(function(e){ // 엔터 누르면 검색되도록 (아직 구현 X)
+			if(e.keyCode == 13){
+				var keyword = $("#search_txt").val();
+				sessionStorage.setItem("keyword", keyword);
+				var url = "searchPage.html?keyword="+keyword;
+				location.replace(url);
+				}
+		});
+		
+		$("#search_btn").click(function(){ // 버튼 누르면 검색됨
+			var keyword = $("#search_txt").val();
+			sessionStorage.setItem("keyword", keyword);
+			var url = "searchPage.html?keyword="+keyword;
+			location.replace(url);
+		});
+	}// 검색 end
+	
+	searchKeyword();
+	
+	// 로그인한 정보 불러오기
+	
+	var custid = sessionStorage.getItem("custid");
+	
+
+});
 </script>
-<!--<link rel="stylesheet" type="text/css" href="mainTest.css"> -->
 </head>
 <body class="main_layout">
  		<img src="./image/logo.png" id="logo">
  		<div class="main_user">
  				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
  				<a href="signupTest.html"><img src="./image/signupicon.png">회원가입</a>
- 				<a href="mypageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
-              <form action="" method="post" class="search">
-				   <input class="search_txt" type="search" placeholder="검색어 입력...">
-				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
+              <form class="search" id="search" name="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력..." id="search_txt">
+				   <a class="search_btn" type="button" id="search_btn"><img  src="./image/searchicon.png" width="35" height="35"></a>
 			  </form>
               <ul>
                   <li class="home"><a href="mainTest.html">홈</a></li>
-                  <li><a href="#">시사회</a></li>	
-                  <li><a href="#">연극</a></li>
-                  <li><a href="#">뮤지컬</a></li>
-                  <li><a href="#">콘서트</a></li>
+                  <li><a href="#">시사회</a>
+                  	<ul>
+                  		<li><a id="cate1_current" cateid="1" time="1">현재상영작</a></li>
+                  		<li><a id="cate1_future" cateid="1" time="2">개봉예정작</a></li>
+                  		<li><a id="cate1_past" cateid="1" time="0">과거상영작</a></li>
+                  	</ul>
+                  	</li>
+                  <li><a href="#">연극</a>
+	                  <ul>
+	                  	<li><a id="cate2_current" cateid="2" time="1">현재상영작</a></li>
+                  		<li><a id="cate2_future" cateid="2" time="2">개봉예정작</a></li>
+                  		<li><a id="cate2_past" cateid="2" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">뮤지컬</a>
+	                  <ul>
+	                  	<li><a id="cate3_current" cateid="3" time="1">현재상영작</a></li>
+                  		<li><a id="cate3_future" cateid="3" time="2">개봉예정작</a></li>
+                  		<li><a id="cate3_past" cateid="3" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">콘서트</a>
+	                  <ul>
+	                  	<li><a id="cate4_current" cateid="4" time="1">현재상영작</a></li>
+                  		<li><a id="cate4_future" cateid="4" time="2">개봉예정작</a></li>
+                  		<li><a id="cate4_past" cateid="4" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
              </ul>
         </nav>
      <div id="main-header">
-            <header> 
-                 <img src="./image/monster.jpg" id="poster1">
-            </header>
+     	<div id="left_button">&lt;</div>
+	 		<div class="slider" data-role="slider" data-width="1380" data-height="600" style="position: relative; overflow: hidden; width: 500px; height: 500px;">
+				<div class="container" style="position: absolute; overflow: hidden;">
+					<div class="item" style="float: left;">
+						<img src="./image/monster.jpg" class="poster">				
+					</div>
+					<div class="item" style="float: left;">				
+						<img src="./image/monster2.jpg" class="poster">
+					</div>
+					<div class="item" style="float: left;">
+						<img src="./image/upposter.jpg" class="poster">
+					</div>
+				</div>
+			</div>
+        <div id="right_button">&gt;</div>
      </div>
+     <br>
      <hr>
      <div id="main-content">
+     	<div>
      	<h2>장르별랭킹</h2>
-     	<ul>
-               	<li><a href="#">시사회</a></li>	
-                <li><a href="#">연극</a></li>
-                <li><a href="#">뮤지컬</a></li>
-                <li><a href="#">콘서트</a></li>
-     	</ul>
+	     	<ul>
+	               	<li><a id="rank_cate1">시사회</a></li>	
+	                <li><a id="rank_cate2">연극</a></li>
+	                <li><a id="rank_cate3">뮤지컬</a></li>
+	                <li><a id="rank_cate4">콘서트</a></li>
+	     	</ul>
+	     	<br>
+	    </div>	
+	    	<img class="main_rank" src="./image/firsticon.jpg" width="80" height="80">
+	     	<a class="img"  id="rank_preview0"></a>
+	     	 <img class="main_rank" src="./image/secondicon.jpg" width="80" height="80">
+	     	<a class="img"  id="rank_preview1"></a>
+	     	<img class="main_rank" src="./image/thirdicon.jpg" width="80" height="80">
+	     	<a class="img"  id="rank_preview2"></a>
+		<br>
+		<div>
+     	<h2>현재상영작 </h2>
+	     	<ul id="current_cate">
+	               	<li><a id="current_cate1">시사회</a></li>	
+	                <li><a id="current_cate2">연극</a></li>
+	                <li><a id="current_cate3">뮤지컬</a></li>
+	                <li><a id="current_cate4">콘서트</a></li>
+	     	</ul>
+	     	<br>
+     	</div>
+     	<div id="current_cate_img">
+     		<a class="img"  id="current_preview0" ></a>
+	     	<a class="img"  id="current_preview1"></a>
+	     	<a class="img"  id="current_preview2"></a>
+	  	</div>
      	<br>
+     	  	<div>
+     	<h2>개봉예정작</h2>
+	     	<ul id="future_cate">
+	               	<li><a id="future_cate1">시사회</a></li>	
+	                <li><a id="future_cate2">연극</a></li>
+	                <li><a id="future_cate3">뮤지컬</a></li>
+	                <li><a id="future_cate4">콘서트</a></li>
+	     	</ul>
+	     	<br>
+	    </div>	
+	     	<a class="img" id="future_preview0"></a>
+	     	<a class="img" id="future_preview1"></a>
+	     	<a class="img" id="future_preview2"></a>
      </div>
      <div id="main-footer">
 		<footer>

@@ -1,5 +1,5 @@
 /* 초기화하기 */
-	.main_layout{
+	.mypage_layout{
         width : 1380px;
 		margin : auto;
     }
@@ -11,6 +11,13 @@
 	}	
 	li{
 		list-style: none;
+	}
+	table{
+		position : absolute;
+		left : 70%; top : 40%;
+		margin-left : -240px;
+		margin-top : -400px;
+		width : 500px; height : 500px;
 	}
 /* 상단 구성하기 */
 	#logo{
@@ -73,19 +80,12 @@
   		right : -25px;
 	}
 /* main-header 구성하기 */
-	#menu{
-		z-index:100;
-	}
-
 	#navigation{
-		position: sticky;
 		top: 0;
-		z-index : 100;
 	}	
 	#navigation ul{
-		/*background-image: linear-gradient(90deg, #08428C, #091140);*/
 		background-color : #08428C;
-		border-radius : 5px 5px 0px 0px;
+		border-radius : 5px 5px 5px 5px;
 		list-style-type: none;
 	    margin: 0;
 	    padding: 0;
@@ -113,7 +113,7 @@
 		text-decoration: none;
 		line-height : 30px;
 	}
-	#navigation li:hover:not(.home, #navigation li ul li){
+	#navigation li:hover:not(.home){
 		transition-duration: 0.4s;
 		border-bottom: 5px solid #F2AE30;
 		padding-bottom : 9px;
@@ -121,116 +121,55 @@
 	#navigation ul li:hover ul {
 		display: block;
 	}
-	#navigation li ul{
-		z-index : 100;
-		position : absolute;
-		background-color : rgba(255, 255, 255, 0.8);
-		display : none;
-		height : auto; width : 170px;
-		margin-left : -60px;
-		margin-top : 14px;
-		border-radius : 0px 0px 10px 10px;
-	}
-	#navigation li ul li:hover{
-		font-weight : 600;
-	}
-	#navigation li ul li a{
-		color : #08348C;
-	}
 	hr{
-		position : absolute;
-		border: 0;
+		border : 0;
 		height : 2.5px;
 		background-color : #08348C;
-		top : 2000px;
 	}
-/* 포스터 부분 */	
-	.poster{
-		display : block;
-		position : absolute;
-		max-width: 100%;
-		width: 1400px;
-		height: 600px;
-		margin : auto;
+/* 검색결과 글꼴 */
+	#search_title{
+		height : 50px;
+		margin-left : 20px;
 	}
-	#left_button, #right_button{
-		z-index : 99;
-		position : absolute;
-		display : inline-block;
-		cursor : pointer;
-		font-size:100px;
-		color: #F2AE30;
-		top: 380px;
+	#search_title p{
+		font-size : 20px;
+		color : #08348C;
+		font-weight: 500;
 	}
-	#right_button{
-		position : absolute;
-		left : 1340px;
+	#search_title span{
+		font-size : 30px;
+		color : #F2AE30;
+		font-weight : 600;	
 	}
-	.slider{
-		float : left;
-		overflow : hidden;
+/* 검색결과 내용 */
+	.search_result{
+		position : relative;
+		margin-bottom : 100px;
+		width : 1100px;
+		height : 250px;
+		border : 2px solid #dddddd;
+		border-radius : 20px;
+		margin : 60px;
 	}
-/* 본문 구성하기 */
-	.main_rank{
-		position : absolute;
-		margin : auto;
-		margin-left : 15px;
+	.search_result img{
+		position : relative;
+		border-radius : 20px;
+		right : 8px;
+		bottom : 3px;
+		border : 2px solid #dddddd;
 	}
-	#main-content h2{
-		padding-left : 10px;
-		color : #F2AE30;	
-		padding : 10px;
-		margin-top : 70px;
-	}
-	#main-content p{
-		margin-top : 30px;
-		text-align : center;
-		font-size : 16px;
-		font-weight : 600;
-		color : #08428C;
-	}
-	#main-content ul{
-		text-align : center;
-	}
-	#main-content ul>li{
-		float : left;
-		border : 1.5px solid #dcdcdc; 
-      	border-radius : 25px 25px 25px 25px;
-      	width : 80px;
-      	height : 25px;
-      	line-height : 25px;
-      	padding : 5px;
-      	margin-right : 15px;
-	}
-	#main-content li a{
-		font-size : 14px;
+	.search_result li{
+		position : relative;
+		margin : 18px;
+		left : 170px;
+		bottom : 258px;
 		color : #091140;
-		height: 100px;
-		text-decoration: none;
 	}
-	#main-content li:hover{
-		transition-duration: 0.5s;
-		background: #08428C;
-	}
-	#main-content li:hover a{
-		color : white;
-	}
-	#main-content div{
-		margin-bottom : 20px;
-	}
-	.img{
-		display: inline-block;
-		margin-top : 30px;
-		margin-left : 120px;
-		cursor : pointer;
-	}
-	#main-content:hover img{
-		background-color:rgba(255, 255, 255, 0.7);
-	}
-	.img:hover img{
-		transform : scale(1.05);
-		transition-duration: 0.5s;
-		z-index: 0;
+	.search_result h2{
+		position : relative;
+		left : 222px;
+		bottom : 260px;
+		color : #08348C;
 	}
 /* footer 구성하기 */
 	#main-footer{

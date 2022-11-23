@@ -2,6 +2,7 @@ package com.sist.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,19 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sist.dao.CustomerDAO;
+import com.google.gson.Gson;
+import com.sist.dao.TicketDAO;
+import com.sist.vo.TicketVO;
 
 /**
- * Servlet implementation class LoginCustomer
+ * Servlet implementation class SearchTicket
  */
-@WebServlet("/LoginCustomer")
-public class LoginCustomer extends HttpServlet {
+@WebServlet("/SearchTicket")
+public class SearchTicket extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginCustomer() {
+    public SearchTicket() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,22 +33,17 @@ public class LoginCustomer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String custid = request.getParameter("custid");
-		String pwd = request.getParameter("pwd");
-		boolean login_Flag;
+		TicketDAO ticketdao = TicketDAO.getInstance();
+		String keyword = request.getParameter("keyword");
 		
-		System.out.println("custid :"+ custid);
-		System.out.println("pwd : " +pwd);
+		ArrayList<TicketVO> list = ticketdao.searchTicket(keyword);
+		Gson gson = new Gson();
+		String str = gson.toJson(list);
 		
-		CustomerDAO customerdao = CustomerDAO.getInstance();
-		
-		login_Flag = customerdao.login(custid, pwd);
-		
-		response.setContentType("text/plain");
+		response.setContentType("application/json;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		out.print(login_Flag);
+		out.print(str);	
 		out.close();
-		
 	}
 
 	/**

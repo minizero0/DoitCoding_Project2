@@ -276,11 +276,119 @@
 		text-align: center;
 	}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		// custid 받아오기
+		var custid = sessionStorage.getItem("custid");
+		
+		// 예매내역 출력
+		$.ajax("BookByCustid", {
+			data:{custid:custid},
+			success:function(arr){
+				for(var i =0; i<arr.length; i++){
+					var div = $("<div></div>").addClass("booklist");
+					var a = $("<a></a>").attr({
+						ticketid: arr[i].ticketid,
+						id: "preview"+i,
+						href:"detailTest.html?ticketid="+arr[i].ticketid
+					});	
+						var img = $("<img>").attr({
+						src: "images/"+arr[i].img_fname,
+						width : 200,
+						height: 251,
+						});
+					var title = $("<h2></h2>").html(arr[i].ticket_name);
+					var ul = $("<ul></ul>");
+						var bookid = $("<li></li>").html("예매번호 :"+arr[i].bookid);
+						var ticket_date = $("<li></li>").html("관람일 :"+arr[i].ticket_date);
+						var loc = $("<li></li>").html("상영관 :"+arr[i].loc);
+						var seatnum = $("<li></li>").html("관람인원 :"+arr[i].seatnum+"명");
+						var seatname = $("<li></li>").html("관람좌석 :"+arr[i].seatname);
+						
+					var button = $("<button>후기작성</button>").attr({
+						type:"button",
+						id : "btn_toReview"+i,
+						custid:custid,
+						ticketid: arr[i].ticketid
+					})
+
+					var checkbox = $("<input>").attr({
+						type:"checkbox",
+						id:"check2_"+i,
+						bookid:arr[i].bookid
+					})
+					var label = $("<label></label>").attr("for", "check2_"+i);
+						
+					$(ul).append(bookid, ticket_date, loc, seatnum, seatname);
+					$(a).append(img);
+					$(div).append(a,title,ul,button,checkbox,label);
+					$("#book_all").append(div);
+					
+					// 이미지 클릭하면 detail 페이지로
+					
+					var preview_id = '#preview'+i;
+					
+					$(document).on('click', preview_id, function(e){
+						var target = this.id;
+						var ticketid = $("#"+target).attr("ticketid");
+						sessionStorage.setItem("ticketid", '');
+						sessionStorage.setItem("ticketid", ticketid);
+						});
+					
+					// 후기작성 버튼 누르면 mypage_Review로
+					
+					var btn_toReview = '#btn_toReview'+i;
+					
+					$(document).on('click', btn_toReview, function(e){
+						var target = this.id;
+						var custid_btn = $("#"+target).attr("custid");
+						var ticketid = $("#"+target).attr("ticketid");
+						
+						sessionStorage.setItem("custid", '');
+						sessionStorage.setItem("custid", custid_btn);
+						sessionStorage.setItem("ticketid", '');
+						sessionStorage.setItem("ticketid", ticketid);
+						
+						var url = "mypage_Review.html?custid="+custid+"?ticketid="+ticketid;
+						location.replace(url);
+						});
+
+					// 예매내역 삭제
+					var checkbox_delete = "#check2_"+i;
+					
+					
+					var delete_book = function(bookid_delete){ // 예매내역 삭제 버튼 이벤트
+						$(document).on('click', '#book_cancel', function(){
+							$.ajax("DeleteBook", {
+								data:{bookid:bookid_delete},
+								success:function(){
+									alert("삭제완료");
+								}
+							})
+						});
+					}
+					
+					$(document).on('click', checkbox_delete, function(){ // 체크박스 체크하면 bookid 가져옴
+						var target = this.id;
+						if($("#"+target).attr('checked', true)){
+							var bookid_delete = $("#"+target).attr("bookid");
+							delete_book(bookid_delete);
+						}
+					});
+				}
+			}
+		});
+		
+	})// $funtion 전체 end
+
+</script>
 </head>
 <body class="mypage_layout">
- 		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
+ 		<a href="mainTest.html"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
- 				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
  				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
@@ -306,34 +414,8 @@
        		</ul>
        </div>
     <form action="" method="post" id="form">
-		<div class="booklist">
-			<img src="./image/서툰 사람들.png" width="200" height="252">
-			<h2>제목</h2>
-			<ul>
-				<li>예매번호 : </li>
-				<li>관람일 : </li>
-				<li>상영관 : </li>
-				<li>관람인원 : </li>
-				<li>관람좌석 : </li>
-			</ul>
-			<button>후기작성</button>
-			<input type="checkbox" id="check">
-			<label for="check"></label>
-		</div>
-		<div class="booklist">
-			<img src="./image/blackpink.jpg" width="200" height="252">
-			<h2>제목</h2>
-			<ul>
-				<li>예매번호 : </li>
-				<li>관람일 : </li>
-				<li>상영관 : </li>
-				<li>관람인원 : </li>
-				<li>관람좌석 : </li>
-			</ul>
-			<button>후기작성</button>
-			<input type="checkbox" id="check2">
-			<label for="check2"></label>
-		</div>
+    <div id="book_all">
+    </div>
 		<button id="book_cancel">예매취소</button>
 	</form>
   	  <div id="main-footer">
