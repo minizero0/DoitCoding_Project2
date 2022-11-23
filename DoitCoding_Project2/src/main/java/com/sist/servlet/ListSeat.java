@@ -34,11 +34,10 @@ public class ListSeat extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		int ticketid = Integer.parseInt(request.getParameter("ticketid"));
+		int ticketid = Integer.parseInt(request.getParameter("ticketid"));
 		response.setContentType("application/json;charset=utf-8");
 		SeatDAO dao = SeatDAO.getInstance();
-		
-		ArrayList<SeatVO> list = dao.listSeatByTicketid(3);
+		ArrayList<SeatVO> list = dao.listSeatByTicketid(ticketid);
 		Gson json = new Gson();
 		String str = json.toJson(list);
 		PrintWriter out = response.getWriter();

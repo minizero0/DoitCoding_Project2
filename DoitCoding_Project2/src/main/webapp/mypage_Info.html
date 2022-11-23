@@ -5,12 +5,90 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="mypage_Info.css">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#get_customer").ready(function(){
+		sessionStorage.setItem("custid","mj1234");
+		
+		$.ajax({
+			url: "GetCustomerAction",
+			data: {custid: sessionStorage.getItem("custid")},
+			success: function(c,item){
+				console.log("c아이디"+c.custid);
+				console.log("c비번"+c.pwd);
+				console.log("c이름"+c.name);
+				console.log("c생일"+c.birth);
+				console.log("c이메일"+c.email);
+				console.log("c번호"+c.phone);				
+				console.log("c성별"+c.gender);
+				console.log("c선호"+c.cateid);
+				console.log("아이디:"+item.custid);		//아이디:undefined
+				$("#custid").val(c.custid);
+				$("#pwd").val(c.pwd);
+				$("#name").val(c.name);
+				$("#birth").val(c.birth);
+				$("#email").val(c.email);
+				$("#phone").val(c.phone);
+				$('.gender[value='+c.gender+']').attr('checked','checked');				
+				$('.favor[value='+c.cateid+']').attr('checked','checked');				
+			}
+		});
+	});	//#get_customer 수정하기 위해 회원정보 가져오기
+	
+	
+	$("#btn_cancel").click(function(){	
+		if (confirm('회원정보 수정을 취소하시겠습니까?')){
+			location.href = "maintest.jsp";	//clicked '확인'
+		}else{
+			location.href = "mypage_Info.html";	//clicked '취소'
+		}
+	});	//#btn_cancel 이벤트	
+	
+			
+	//수정된 내용 db에 반영하는 이벤트
+	$("#form_updateCustomer").submit(function(e){	//수정된 회원정보를 form이 제출
+		var url = "UpdateCustomerAction"
+		
+		var custid = $("#custid").val();
+		var pwd = $("#pwd").val();
+		var name = $("#name").val();
+		var birth = $("#birth").val();	
+		var phone = $("#phone").val();
+		var email = $("#email").val();
+		var gender = $("input:radio[name=gender]:checked").val();		
+		var cateid = $("input:radio[name=favor]:checked").val();
+
+		var data = {
+				custid:custid,
+				pwd:pwd,
+				name:name,
+				email:email,
+				birth:birth,
+				phone:phone,
+				gender:gender,
+				cateid:cateid
+		};
+		
+		console.log(data);
+		
+		$.ajax({
+			url:url,
+			data:data,
+			success:function(re){
+				alert("회원 정보가 성공적으로 수정되었습니다.");
+			}
+		});
+		e.preventDefault();
+	});	//#form_updateCustomer가 제출됨	
+});	//전체 $funtion
+</script>
 </head>
 <body class="mypage_layout">
  		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
  				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="myPage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="mypage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
               <form action="" method="post" class="search">
@@ -34,16 +112,19 @@
        			<li><a href="mypage_Review.html">내 후기</a></li>       		
        		</ul>
        </div>
-       <div id="background"></div>
-       <form action="" method="post" id="form">
-		<table>
+       <div id="background">
+       	<h2>회원정보 수정</h2>
+       	<hr>
+       </div>
+       <form method="post" id="form_updateCustomer">
+		<table id="get_customer">
 			<tr>
 				<td>아이디</td>
 				<td><input type="text" name="custid" id="custid" class="box" readonly/></td>
 			</tr>		
 			<tr>
 				<td>비밀번호</td>
-				<td><input type="password" name="pwd" class="box"></td>
+				<td><input type="password" name="pwd" id="pwd" class="box"></td>
 			</tr>
 			<tr>
 				<td colspan="2" class="info">* 최소 6자 이상 영문, 숫자로만 입력</td>
@@ -54,56 +135,49 @@
 			</tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="name" class="box" size="10"></td>
+				<td><input type="text" name="name" id="name" class="box" size="10"></td>
 			</tr>
 			<tr>
 				<td>이메일주소</td>
 				<td>
-					<input type="text" name="email" size="10" class="box">&nbsp;@&nbsp;
-					<select name="email" class="cbox">
-						<option value="@gmail.com">gmail.com</option>
-						<option value="@naver.com">naver.com</option>
-						<option value="@hanmail.net">hanmail.net</option>
-						<option value="@kakao.com">kakao.com</option>
-						<option value="">직접입력</option>
-					</select>
+					<input type="text" name="email" id="email" size="30" class="box">
+
 				</td>
 			</tr>
 			<tr>
 				<td>생년월일</td>
-				<td><input type="text" name="birth" class="box"></td>
+				<td><input type="text" name="birth" id="birth" class="box"></td>
 			</tr>
 			<tr>
 		        <td>전화번호</td>
 		        <td>
-		        	<input type="text" name="phone" maxlength="3" size="4" class="box"> -
-            		<input type="text" name="phone" maxlength="4" size="4" class="box"> -
-            		<input type="text" name="phone" maxlength="4" size="4" class="box">
+		        	<input type="text" name="phone" id="phone" maxlength="13" size="15" class="box">
             		<button>중복확인</button>
        		   </td>
       	   </tr>
       	   <tr>
       	   		<td>성별</td>
-      	   		<td class="td1">
-					남성<input type="radio" id="male" name="gender" value="male">&nbsp;&nbsp;&nbsp;&nbsp;
-					여성<input type="radio" name="gender" value="female">
+      	   		<td class="td1" id="gender">
+					남성<input type="radio" id="male" name="gender" value="남자" class="gender">&nbsp;&nbsp;&nbsp;&nbsp;
+					여성<input type="radio" name="gender" value="여자" class="gender">
 				</td>			
       	   </tr>
       	   <tr>
       	   		<td>관심사</td>
-      	   		<td class="td1">
-      	   			시사회<input type="radio" name="favor" value="preview">
-      	   			연극<input type="radio" name="favor" value="play">
-					뮤지컬<input type="radio" name="favor" value="musical">
-					콘서트<input type="radio" name="favor" value="concert">
+      	   		<td class="td1" id="cateid">
+      	   			시사회<input type="radio"  name="favor" value="1" class="favor" >
+      	   			연극<input type="radio"  name="favor" value="2" class="favor">
+					뮤지컬<input type="radio"  name="favor" value="3" class="favor">
+					콘서트<input type="radio"  name="favor" value="4" class="favor">
       	   		</td>
       	   </tr>
 		</table>
 		<div class="caption">
-			<button id="btn_cancel">취소</button>&nbsp;&nbsp;
-			<button id="btn_update">수정하기</button>
+			<button id="btn_cancel">취소</button>&nbsp;&nbsp;		
+			<input type="submit" id="btn_update" value="수정하기">
 		</div>
 	</form>
+	
   	  <div id="main-footer">
 		<footer>
 			<div>Footer</div>
