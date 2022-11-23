@@ -25,6 +25,61 @@ public class CustomerDAO {
 		return customerDAO;
 	}
 	
+	public String findPwd(String custid, String phone) {
+		String pwd = null;
+		String sql = "select custid from customer where custid = ? and phone = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, custid);
+			pstmt.setString(2, phone);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				pwd = rs.getString(1);
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		
+		return pwd;
+	}
+	
+	public String findCustid(String name, String phone) {
+		String custid = null;
+		String sql = "select custid from customer where name = ? and phone = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, phone);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				custid = rs.getString(1);
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		
+		return custid;
+	}
 	
 	//회원 가입
 	public int insertCustomer(CustomerVO c) {
