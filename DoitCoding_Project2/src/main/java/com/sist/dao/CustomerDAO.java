@@ -311,14 +311,18 @@ public class CustomerDAO {
 			return birth;			 
 		}
 		
-		//생년월일로 만 나이 구하는 메소드
-		public int getAge(String birth) {
+		//생년월일로 만 나이 구하는 메소드  ==> 세대별 통계, 관람등급에 사용	
+		public int getAge(String custid) {
+			//db에 저장된 생일 불러오기
+			CustomerVO c = findById(custid);
+			String birth = c.getBirth();
+			
 			int age = 0;
 			
 			//태어난 년월일 문자열을 숫자로 변환
-			String strYear = birth.substring(0, 3);
-			String strMonth = birth.substring(5,6);
-			String strDay = birth.substring(8, 9);
+			String strYear = birth.substring(0, 4);		//인덱스가 0부터 시작, 마지막 인덱스는 포함되지 않음
+			String strMonth = birth.substring(5,7);
+			String strDay = birth.substring(8, 10);
 			int birthYear = Integer.parseInt(strYear);
 			int birthMonth = Integer.parseInt(strMonth);
 			int birthDay = Integer.parseInt(strDay);
@@ -336,6 +340,7 @@ public class CustomerDAO {
 			}
 			return age;
 		}
+			
 		
 	
 	

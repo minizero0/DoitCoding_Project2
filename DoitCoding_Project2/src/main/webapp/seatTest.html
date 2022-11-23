@@ -57,8 +57,11 @@
 <script type="text/javascript">
 	$(function(){
 		$("button").on("click",function(){
+			var sn = $(this).html(); 
+			console.log(sn)
 			  $("button").removeClass("active");
 			  $(this).addClass("active");
+			  console.log($(this).html());
 		});
 	});
 </script>

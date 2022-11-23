@@ -159,6 +159,15 @@
 		text-align: center;
 	}
 </style>
+<script type="text/javascript" src = "https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#logout").click(function(){
+			sessionStorage.removeItem("custid");
+			})
+		})
+
+</script>
 </head>
 <body class="main_layout">
  		<img src="./image/logo.png" id="logo">

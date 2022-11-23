@@ -46,6 +46,7 @@
 $(function(){
 	$("#addBtn").click(function(){
 		var arr = ($("#myform").serializeArray());
+		console.log(arr)
 		var score = arr[0].value;						//별점 스코어 변환
 		var review_content = $("#content").val();		//리뷰 내용
 		

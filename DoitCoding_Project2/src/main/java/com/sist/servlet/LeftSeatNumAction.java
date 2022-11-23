@@ -1,33 +1,42 @@
 package com.sist.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sist.dao.TicketDAO;
+
 /**
- * Servlet implementation class InsertBook
+ * Servlet implementation class LeftSeatNumAction
  */
-@WebServlet("/InsertBook")
-public class InsertBook extends HttpServlet {
+@WebServlet("/LeftSeatNumAction")
+public class LeftSeatNumAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertBook() {
+    public LeftSeatNumAction() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
+    /**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		TicketDAO dao = TicketDAO.getInstance();
+		int num = dao.leftSeat(Integer.parseInt(request.getParameter("ticketid")));
+		System.out.println("잔여좌석: "+num);
+		response.setContentType("text/plain");
+		PrintWriter out = response.getWriter();
+		out.print(num);
+		out.close();
 	}
 
 	/**

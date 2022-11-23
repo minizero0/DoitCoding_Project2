@@ -17,7 +17,7 @@ import com.sist.vo.TicketVO;
 /**
  * Servlet implementation class TicketData
  */
-@WebServlet("/DetailAction")
+@WebServlet("/ticketdata")
 public class TicketData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

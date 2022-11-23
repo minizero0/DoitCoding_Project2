@@ -173,8 +173,10 @@ public class TicketDAO {
 	
 	//특정 티켓 내역 출력
 	public TicketVO findById(int ticketid) {
+		System.out.println(ticketid);
 		TicketVO t = null;
 		String sql = "select * from ticket where ticketid=?";
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -230,12 +232,12 @@ public class TicketDAO {
 		// 현재 시간
         LocalTime now = LocalTime.now();
         // 현재시간 출력
-        System.out.println(now);  // 06:20:57.008731300
+        //System.out.println(now);  // 06:20:57.008731300
         // 포맷 정의하기
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         // 포맷 적용하기
         String formatedNow = now.format(formatter);
-        
+        //System.out.println("현재:"+formatedNow);
 		return formatedNow;
 	}
 	
@@ -245,13 +247,17 @@ public class TicketDAO {
 		String sql = "select count(*) from seat where ticketid = ? and check_seat= 'n'";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
 			Context context = new InitialContext();
 			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, ticketid);
-			num = pstmt.executeUpdate();
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				num = rs.getInt(1);
+			}
 		} catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		} finally {

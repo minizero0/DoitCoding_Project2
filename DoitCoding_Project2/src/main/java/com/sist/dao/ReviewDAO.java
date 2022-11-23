@@ -25,6 +25,32 @@ public class ReviewDAO {
 		return reviewDAO;
 	}
 	
+	//새로운 예매번호 발행
+	public int getNextReviewid() {
+		int reviewid = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select nvl(max(reviewid),0) + 1 from review";
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reviewid = rs.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return reviewid;
+	}
+	
 	
 	//후기 추가
 	public int insertReview(ReviewVO r) {
@@ -238,6 +264,13 @@ public class ReviewDAO {
 	public ArrayList<ReviewVO> findByTicketid(int ticketid, int re){
 		ArrayList<ReviewVO> list = new ArrayList<ReviewVO>();
 		String sql = "select * from review where ticketid = ?";
+		if(re>0) {
+			sql += " order by score desc";
+		}else if(re<0){
+			sql += " order by score";
+		}else {
+			sql += " order by score desc";
+		}
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -248,6 +281,7 @@ public class ReviewDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, ticketid);
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				ReviewVO b = new ReviewVO();
 				b.setReviewid(rs.getInt("reviewid"));
@@ -265,5 +299,31 @@ public class ReviewDAO {
 			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
 		}
 		return list;
+	}
+	
+	//해당 작품의 평균 별점 리턴하는 메소드
+	public int avgScore(int ticketid) {
+		int score=0;
+		String sql = "select avg(score) from review where ticketid=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ticketid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				score = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return score;
 	}
 }

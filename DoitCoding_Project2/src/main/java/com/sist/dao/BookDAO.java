@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -22,6 +23,57 @@ public class BookDAO {
 			bookDAO = new BookDAO();
 		}
 		return bookDAO;
+	}
+	
+	//예매 등록
+	public int registBook(BookVO b) {
+		int re = -1;
+		String sql = "insert into book(bookid,custid,ticketid,seatid) values(?,?,?,?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b.getBookid());
+			pstmt.setString(2, b.getCustid());
+			pstmt.setInt(3, b.getTicketid());
+			pstmt.setInt(4, b.getSeatid());
+			re = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		} finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return re;
+	}
+	
+	//새로운 예매번호 발행
+	public int getNextBookid() {
+		int bookid = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select nvl(max(bookid),0) + 1 from book";
+		try {
+			Context context = new InitialContext();
+			DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bookid = rs.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+		}
+		return bookid;
 	}
 	
 	
@@ -191,4 +243,68 @@ public class BookDAO {
 		}
 		return list;
 	}
+	
+	//성별별로 그 티켓을 예매한 의 수 반환
+		public ArrayList<HashMap<String, Integer>> countGender(int ticketid){
+			ArrayList<HashMap<String, Integer>> list = new ArrayList<HashMap<String,Integer>>();
+			String sql = "select gender,count(*) from customer c, book b where c.custid = b.custid and b.ticketid = ? group by gender";
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				Context context = new InitialContext();
+				DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+				conn = ds.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, ticketid);
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					String gender = rs.getString(1);
+					int count = rs.getInt(2);
+					HashMap<String,Integer> map = new HashMap<String,Integer>();
+					map.put(gender,count);
+					list.add(map);
+					System.out.println("list: "+list);
+				}
+			} catch (Exception e) {
+				System.out.println("예외발생:"+e.getMessage());
+			} finally {
+				if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+				if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+			}
+			return list;
+		}
+		
+		//예매자 세대별 통계내는 메소드
+			public ArrayList<HashMap<String, Integer>> countGeneration(int ticketid){
+				ArrayList<HashMap<String, Integer>> list = new ArrayList<HashMap<String,Integer>>();
+				String sql = "select generation, count(*)"
+						+ " from (select custid, trunc(to_char(sysdate,'yyyy') - substr(birth,1,4),-1) as generation from customer) c, book b"
+						+ " where c.custid=b.custid and b.ticketid=? group by generation";
+				Connection conn = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				try {
+					Context context = new InitialContext();
+					DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+					conn = ds.getConnection();
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, ticketid);
+					rs = pstmt.executeQuery();
+					while(rs.next()) {
+						String generation = rs.getString(1);
+						int count = rs.getInt(2);
+						HashMap<String, Integer> map = new HashMap<String, Integer>();
+						map.put(generation, count);
+						list.add(map);
+					}
+				} catch (Exception e) {
+					System.out.println("예외발생:"+e.getMessage());
+				} finally {
+					if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+					if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+					if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+				}
+				return list;
+			}
 }
