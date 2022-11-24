@@ -16,7 +16,7 @@
 				success:function(login_Flag){
 					alert(login_Flag);
 					
-					if(login_Flag){
+					if(login_Flag=="true"){
 						sessionStorage.setItem("custid", custid);
 						var url = "mainTest.html?custid="+custid;
 						location.replace(url);
