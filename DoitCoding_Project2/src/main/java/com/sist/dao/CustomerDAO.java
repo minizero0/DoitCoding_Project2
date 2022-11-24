@@ -27,7 +27,7 @@ public class CustomerDAO {
 	
 	public String findPwd(String custid, String phone) {
 		String pwd = null;
-		String sql = "select custid from customer where custid = ? and phone = ?";
+		String sql = "select pwd from customer where custid = ? and phone = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

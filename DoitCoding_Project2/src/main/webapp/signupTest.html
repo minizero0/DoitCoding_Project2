@@ -48,7 +48,9 @@
 			$.ajax(url, {
 				data:data,
 				success:function(re){
-					alert(re);
+					if(re==1){
+						$(location).attr('href',"loginTest.html");
+					}
 				}
 			}); // Ajax 통신 시작
 			e.preventDefault();

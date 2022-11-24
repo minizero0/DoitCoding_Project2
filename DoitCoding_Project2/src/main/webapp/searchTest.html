@@ -53,6 +53,12 @@
 	#login img{
 		padding-right : 6px;
 	}
+	#logout{
+		display:none;
+	}
+	#mypage{
+		display:none;
+	}
 	.search{
 		overflow : hidden;
 		position: relative;
@@ -162,8 +168,10 @@
 <body class="main_layout">
  		<img src="./image/logo.png" id="logo">
  		<div class="main_user">
+ 				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
  				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="signupTest.html" id="regist"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
               <form action="" method="post" class="search">
@@ -173,8 +181,8 @@
               <ul>
                   <li class="home"><a href="#">홈</a></li>
                   <li><a href="#">시사회</a></li>	
-                  <li><a href="#">연극</a></li>
                   <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">연극</a></li>
                   <li><a href="#">콘서트</a></li>
              </ul>
         </nav>
@@ -203,7 +211,8 @@
 ​
   	  <div id="main-footer">
 		<footer>
-			<div>Footer</div>
+			<div>ⓒ CodingDoit corp.
+</div>
 		</footer>
 	</div>	  
 </body>

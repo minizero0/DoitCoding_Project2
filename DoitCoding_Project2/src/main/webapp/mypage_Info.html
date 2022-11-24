@@ -8,8 +8,28 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	
+	if(custid != null){
+		$("#login").css('display', 'none');
+		$("#regist").css('display', 'none');
+		$("#logout").css('display','inline-block');
+		$("#mypage").css('display','inline-block');
+	}
+	
+	$("#logout").click(function(e){
+        if(confirm("로그아웃 하시겠습니까?")){
+	            $("#login").css('display', 'inline-block');
+	    		$("#regist").css('display', 'inline-block');
+	    		$("#logout").css('display','none');
+	    		$("#mypage").css('display','none');
+	    		sessionStorage.removeItem("custid");
+	    		e.preventDefault();		
+        }
+    })
+	
+	
 	$("#get_customer").ready(function(){
-		sessionStorage.setItem("custid","mj1234");
+		var custid = sessionStorage.getItem("custid");
 		
 		$.ajax({
 			url: "GetCustomerAction",
@@ -39,7 +59,7 @@ $(function(){
 	
 	$("#btn_cancel").click(function(){	
 		if (confirm('회원정보 수정을 취소하시겠습니까?')){
-			location.href = "maintest.jsp";	//clicked '확인'
+			location.href = "mainTest.html";	//clicked '확인'
 		}else{
 			location.href = "mypage_Info.html";	//clicked '취소'
 		}
@@ -76,31 +96,144 @@ $(function(){
 			url:url,
 			data:data,
 			success:function(re){
-				alert("회원 정보가 성공적으로 수정되었습니다.");
+				$("#btn_update").click(function(){
+					alert("회원 정보가 성공적으로 수정되었습니다.");
+				});				
 			}
 		});
 		e.preventDefault();
 	});	//#form_updateCustomer가 제출됨	
+	
+	// 네비게이션 바에서 클릭하면 카테고리별 목록으로 넘어가도록
+	var time = 1;
+
+var cate_current = "";
+var cate_future = "";
+var cate_past = "";
+
+for (var i = 1; i <=4; i++) {
+	cate_current = '#cate'+i+"_current";
+	cate_future = '#cate'+i+"_future";
+	cate_past = '#cate'+i+"_past";
+	
+	$(cate_current).click(function(e){	
+		var target = this.id;
+		var cateid_num = $("#"+target).attr("cateid");
+		var time_num = $("#"+target).attr("time");
+	
+    	 time = time_num;
+    	 cateid = cateid_num;
+    	 console.log(cateid);
+    	 
+    	 sessionStorage.setItem("time", time);
+    	 sessionStorage.setItem("cateid", cateid);
+    	 
+    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+		location.replace(url);
+     });
+	
+	$(cate_future).click(function(e){	
+		var target = this.id;
+		var cateid_num = $("#"+target).attr("cateid");
+		var time_num = $("#"+target).attr("time");
+	
+    	 time = time_num;
+    	 cateid = cateid_num;
+    	 console.log(cateid);
+    	 
+    	 sessionStorage.setItem("time", time);
+    	 sessionStorage.setItem("cateid", cateid);
+    	 
+    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+		location.replace(url);
+     });
+	
+	$(cate_past).click(function(e){	
+		var target = this.id;
+		var cateid_num = $("#"+target).attr("cateid");
+		var time_num = $("#"+target).attr("time");
+	
+    	 time = time_num;
+    	 cateid = cateid_num;
+    	 console.log(cateid);
+    	 
+    	 sessionStorage.setItem("time", time);
+    	 sessionStorage.setItem("cateid", cateid);
+    	 
+    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+		location.replace(url);
+     });
+}
+
+// 검색하면 결과가 나오도록
+var searchKeyword = function(f){
+	$("#search_txt").keydown(function(e){ // 엔터 누르면 검색되도록 (아직 구현 X)
+		if(e.which == 13){
+			var keyword = $("#search_txt").val();
+			sessionStorage.setItem("keyword", keyword);
+			var url = "searchPage.html?keyword="+keyword;
+			location.replace(url);
+			}
+	});
+	
+	$("#search_btn").click(function(){ // 버튼 누르면 검색됨
+		var keyword = $("#search_txt").val();
+		sessionStorage.setItem("keyword", keyword);
+		var url = "searchPage.html?keyword="+keyword;
+		location.replace(url);
+	});
+}// 검색 end
+
+searchKeyword();
+	
+	
+	
 });	//전체 $funtion
 </script>
 </head>
 <body class="mypage_layout">
  		<a href="mainTest.html"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
+ 				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
  				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="mypage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="signupTest.html" id="regist"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
- 	    <nav id="navigation">
-              <form action="" method="post" class="search">
-				   <input class="search_txt" type="search" placeholder="검색어 입력...">
-				   <a class="search_btn" href="example.html"><img  src="./image/searchicon.png" width="35" height="35"></a>
-			  </form>
+ 	   <nav id="navigation">
+              <div class="search" id="search" name="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력..." id="search_txt">
+				   <a class="search_btn" type="button" id="search_btn"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </div>
               <ul>
-                  <li class="home"><a href="mainTest.jsp">홈</a></li>
-                  <li><a href="#">시사회</a></li>	
-                  <li><a href="#">연극</a></li>
-                  <li><a href="#">뮤지컬</a></li>
-                  <li><a href="#">콘서트</a></li>
+                  <li class="home"><a href="mainTest.html">홈</a></li>
+                  <li><a href="#">시사회</a>
+                  	<ul>
+                  		<li><a id="cate1_current" cateid="1" time="1">현재상영작</a></li>
+                  		<li><a id="cate1_future" cateid="1" time="2">개봉예정작</a></li>
+                  		<li><a id="cate1_past" cateid="1" time="0">과거상영작</a></li>
+                  	</ul>
+                  	</li>
+                  <li><a href="#">뮤지컬</a>
+	                  <ul>
+	                  	<li><a id="cate2_current" cateid="2" time="1">현재상영작</a></li>
+                  		<li><a id="cate2_future" cateid="2" time="2">개봉예정작</a></li>
+                  		<li><a id="cate2_past" cateid="2" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">연극</a>
+	                  <ul>
+	                  	<li><a id="cate3_current" cateid="3" time="1">현재상영작</a></li>
+                  		<li><a id="cate3_future" cateid="3" time="2">개봉예정작</a></li>
+                  		<li><a id="cate3_past" cateid="3" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">콘서트</a>
+	                  <ul>
+	                  	<li><a id="cate4_current" cateid="4" time="1">현재상영작</a></li>
+                  		<li><a id="cate4_future" cateid="4" time="2">개봉예정작</a></li>
+                  		<li><a id="cate4_past" cateid="4" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
              </ul>
         </nav>
        <div id="menu-bar">
@@ -166,8 +299,8 @@ $(function(){
       	   		<td>관심사</td>
       	   		<td class="td1" id="cateid">
       	   			시사회<input type="radio"  name="favor" value="1" class="favor" >
-      	   			연극<input type="radio"  name="favor" value="2" class="favor">
-					뮤지컬<input type="radio"  name="favor" value="3" class="favor">
+      	   			뮤지컬<input type="radio"  name="favor" value="2" class="favor">
+					연극<input type="radio"  name="favor" value="3" class="favor">
 					콘서트<input type="radio"  name="favor" value="4" class="favor">
       	   		</td>
       	   </tr>

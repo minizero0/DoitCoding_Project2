@@ -4,302 +4,37 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="jquery-ui-1.13.1.custom/jquery-ui.css">
-<!-- 초기화하기 -->
-<style type="text/css">
-	.main_layout{
-        width:1380px;
-		margin : auto;
-    }
-	*{
-		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	}	
-	a{
-		text-decoration: none;
-	}	
-	li{
-		list-style: none;
-	}
-</style>
-<!-- 상단 구성하기 -->
-<style type="text/css">
-	#logo{
-		width: 370px;
-		height: 110px;
-		padding-top : 5px;
-	}
-	.main_user{
-		float : right;
-		padding-top : 60px;
-		padding-right : 15px;
-	}
-	.main_user a{
-		color : #091140;
-		position : relative;
-		font-size : 11px;
-		font-style : bold;
-		margin :-18px;
-		padding-right : 20px;
-	}
-	.main_user img{
-		position : relative;
-		width : 46px;
-		height : 45px;
-		bottom : 15px;
-		left : 47px;
-	}
-	#login{
-		right : 7px;
-		bottom : 1px;
-	}
-	#login img{
-		padding-right : 6px;
-	}
-	.search{
-		overflow : hidden;
-		position: relative;
-  		top: 6px;
-  		right : 15px;
-		float : right;
-		width : 250px;
-		height : 40px; 
-      	border : 2px solid white; 
-      	border-radius : 25px 25px 25px 25px;
-	}
-	.search_txt{
-		position: relative;
-		color : white;
-		top: -10px;
-  		right : -15px;
-		width : 175px;
-		height : 30px; 
-		border: none; 
-		font-size : 13px;
-		background-color:rgba(255, 255, 255, 0);
-	}
-	.search_btn{
-		position : relative;
-  		right : -25px;
-	}
-</style>
-<!-- main-header 구성하기 -->
-<style type="text/css">
-	#navigation{
-		position: sticky;
-		top: 0;
-		z-index : 100;
-	}	
-	#navigation ul{
-		background-color : #08428C;
-		border-radius : 5px 5px 0px 0px;
-		list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	}
-	#navigation ul:after{
-	    content:'';
-	    display: block;
-	    clear:both;
-	}
-	#navigation ul > li{
-		list-style : none;
-		display: inline-block;
-	    text-align: center;
-	    padding: 14px 45px;
-	}
-	#navigation li.home a{
-		color: #F2AE30;
-		font-weight : 600;
-		font-size : 17px;
-	}
-	#navigation li > a{
-		font-size : 16px;
-		color : white;
-		height: 100px;
-		text-decoration: none;
-		line-height : 30px;
-	}
-	#navigation li:hover:not(.home){
-		transition-duration: 0.4s;
-		border-bottom: 5px solid #F2AE30;
-		padding-bottom : 9px;
-	}
-	#navigation ul li:hover ul {
-		display: block;
-	}
-	hr{
-		border : 0;
-		height : 2.5px;
-		background-color : #08348C;
-	}
-</style>
-<!-- 티켓정보 구성하기 -->
-<style type="text/css">
-	#ticket_info{
-		max-width : 100%; height : 450px;
-		background-color : #f1f1f1;
-	}
-	#ticket_info img{
-		border-radius : 15px;
-	}
-	#ticket_info ul{
-		position : relative;
-		margin-left : 310px;
-		bottom : 460px;
-	}
-	#ticket_info ul>li{
-		margin : 20px;
-		font-size : 17px;
-		font-weight : 600;
-		color : #091140;
-	}
-	h2{
-		position : relative;
-		margin-left : 370px;
-		bottom : 470px;
-		font-size : 35px;
-		color : #091140;
-	}
-	#line{
-		position : relative;
-		height : 1.5px;
-		background-color : gray;
-		width : 600px;
-		right : 20px; bottom : 480px;
-	}
-</style>
-<!-- DatePicker -->
-<style type="text/css">
-	#datepicker{
-		margin-left : 1030px;
-		margin-top : -460px;
-	}
-</style>
-<!-- 탭, 상세정보 구성하기 -->
-<style type="text/css">
-	#detail_tab{
-		position : absolute;
-		width : 800px; height : 200px;
-		margin-top : 180px;
-		margin-left : 380px;
-	}
-	#detail_tab li{
-		float : left;
-		margin : 10px;
-		margin-right : 90px;
-		margin-top : 30px;
-		font-size : 16px;
-		cursor : pointer;
-	}
-	#detail_tab li:hover{
-		transition-duration: 0.4s;
-		border-bottom: 5px solid #F2AE30;
-		padding-bottom : 9px;
-		font-weight: 600;
-	}
-	#detail_tab ul > li{
-		display: inline-block;
-	    text-align: center;
-	    padding: 5px 30px;
-	    color : #08348C;
-	}
-	#bookbox{
-		position : absolute;
-		width : 306px; height : 135px;
-		background-color : #eeeeee;
-		border : 1px solid #cccccc;
-		border-radius : 5px;
-		margin-left : 1030px;
-		margin-top : 8px;
-	}
-	#detail_content iframe{
-		margin-top : 300px;
-		margin-left : 260px;
-		border : none;
-	}
-	#detail_content ul li{
-		margin-top : 50px;
-		margin-bottom : 30px;
-		text-align : center;
-		font-weight : 600;
-		font-size: 18px;
-		color : #091140;
-	}
-	#detail_content p{
-		position : relative;
-		text-align : center;
-		left : 22px;
-		font-size : 14px;
-	}
-	#seat{
-		width : 150px; height : 43px;
-		border : 1px solid #eb8f00;
-		background-color : #f6a828;
-		color : white; font-weight : 600;
-		text-align : center;
-		line-height : 43px;
-		font-size : 14px;
-		border-radius : 5px;
-		margin-left : 3px; margin-top : 3px;
-	}
-	#btnbook{
-		position : relative;
-		width : 140px; height : 46px;
-		border : 1px solid #cccccc;
-		background-color : #cccccc;
-		color : white; font-weight : 600;
-		text-align : center;
-		line-height : 43px;
-		font-size : 14px;
-		border-radius : 5px;
-		margin-left : 163px; bottom : 45px;
-	}
-	#btndraw{
-		position : relative;
-		width : 140px; height : 46px;
-		border : 1px solid #D10505;
-		background-color : #D10505;
-		color : white; font-weight : 600;
-		text-align : center;
-		line-height : 43px;
-		font-size : 14px;
-		border-radius : 5px;
-		margin-left : 163px; bottom : 45px;
-		display : none;
-	}
-	#localtime{
-		position : relative;
-		font-size: 45px; font-weight : 650;
-		color : #08348C;
-		margin-left : 68px; bottom : 35px;
-	}
-	#a{
-		margin-top : 60px;
-	}
-</style>
-<!-- footer 구성하기 -->
-<style type="text/css">
-	#main-footer{
-		padding-top: 100px;
-	}
-	footer{
-		line-height: 100px;
-		margin-top : 200px;
-		background: #08428C;
-		color: white;
-		font-size: 14px;
-		text-align: center;
-	}
-</style>
+<link rel="stylesheet" type="text/css" href="detailPageTest.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="jquery-ui-1.13.1.custom/jquery-ui.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ca6eacc79c3d6c2060d565971ecc1786"></script>
 <script type="text/javascript">
 	$( function() {
+		var custid = sessionStorage.getItem("custid");
+	    var ticketid = sessionStorage.getItem("ticketid");
 		
+		if(custid != null){
+			$("#login").css('display', 'none');
+			$("#regist").css('display', 'none');
+			$("#logout").css('display','inline-block');
+			$("#mypage").css('display','inline-block');
+		}
 		
+		$("#logout").click(function(e){
+	        if(confirm("로그아웃 하시겠습니까?")){
+		            $("#login").css('display', 'inline-block');
+		    		$("#regist").css('display', 'inline-block');
+		    		$("#logout").css('display','none');
+		    		$("#mypage").css('display','none');
+		    		sessionStorage.removeItem("custid");
+		    		e.preventDefault();		
+	        }
+	    })
 	    $( "#datepicker" ).datepicker();
 	    
-	    sessionStorage.setItem("ticketid",19);
+	    
+	    
+	    //sessionStorage.setItem("ticketid",10);
 		
 		$.ajax({
 			url: "DetailAction",
@@ -351,6 +86,16 @@
 					$("#vid_url").append(vid);
 				}
 				
+				if(sessionStorage.getItem("ticketid") ==19){
+					var img1 = $("<img>").attr({
+						src: "images/ART_INFO.jpg",
+						width : 700,
+						height: 6000
+					});
+					console.log(img1);
+					$("#art_img").append(img1);
+				}
+				
 				
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				mapOption = { 
@@ -368,12 +113,66 @@
 			    var marker = new kakao.maps.Marker({
 			        position: markerPosition
 			    });
-​
+
 			    // 마커가 지도 위에 표시되도록 설정합니다
 			    marker.setMap(map);
 			}
 		});
 		
+		//오픈일이 되면 예매 버튼 활성화
+	    $.ajax({
+	    	url: "GetOpendateAction",
+	    	data: {ticketid: sessionStorage.getItem("ticketid")},
+	    	success: function(data){
+	    		console.log("t.t"+data);
+	    		var openDate = new Date(data);
+	    		var today = new Date();
+	    		console.log("open:"+openDate);
+	    		console.log(today);
+	    		
+	    		if(openDate <= today){
+	    			$("#btnbook").removeAttr("disabled").css({
+	    				"border":"1px solid #D10505",
+						"background-color":"#D10505"
+	    			});
+	    			$(document).on("click","#btnbook",function(){
+	    				//location.href="detailPageTest.html";
+	    				console.log("btnbook 클릭");
+	    				var url = "regist.html";
+	    				location.replace(url);	    				
+	    			});	
+	    		}	    		
+	    	}
+	    });
+		
+	  //마감일이 되면 예매 버튼 비활성화
+	    $.ajax({
+	        url: "GetClosedateAction",
+	        data: {ticketid: sessionStorage.getItem("ticketid")},
+	        success: function(data){
+	            var closeDate = new Date(data);
+	            
+	            var today = new Date();
+	            console.log("close:"+closeDate);
+	            console.log("today:"+today);
+	            
+	            if(today <= closeDate){
+	                console.log("OK");
+	                $("#btnbook").attr("disabled").css({
+	                    "border":"1px solid #cccccc",
+	                    "background-color":"#cccccc"
+	                });
+	                $(document).on("click","#btnbook",function(){
+	                    //location.href="detailPageTest.html";
+	                    console.log("btnbook 클릭");
+	                    var url = "detailPageTest.html";
+	                    location.replace(url);                      
+	                }); 
+	            }               
+	        }
+	    });
+		
+		//남은 좌석수 반환
 		$.ajax({
 			url:"LeftSeatNumAction",
 			data: {ticketid: sessionStorage.getItem("ticketid")},
@@ -383,11 +182,12 @@
 				$("#seat").append(num);
 				
 				if(num ==0){
-					//예매하기 버튼 활성화
+					//드로우 버튼 활성화
 				}
 			}
 		});
 		
+		//서버시간 가져오기
 		setInterval(function(){
 			$.ajax({
 				url:"GetServerTime",
@@ -396,30 +196,264 @@
 					$("#localtime").append(data);
 				}
 			});
-		}, 1000);	
+		}, 1000);
+		
+		//리뷰 정렬
+		var re=0;
+		$(document).ready(function(){
+			$("#reviewOrder").on('change',function(){
+				if(this.value !== ""){
+					var optVal = $(this).find(":selected").val();
+					console.log("선택된 옵션: "+optVal);
+					if(optVal=="평점 높은순"){
+						var re = 1;
+						console.log("re: "+re);
+					}else{
+						var re = -1;
+						console.log("re: "+re);
+					}
+				}
+				console.log(re);
+				
+				$.ajax({
+					url:"FindReviewByTicketid",
+					data:{ticketid:ticketid},
+					success:function(data){
+						if(data == 1){
+							$.ajax({
+								url:"TicketReview",
+								data: {ticketid: sessionStorage.getItem("ticketid"),
+										re: re},
+								success: function(data){
+									console.log(data);
+									$("#review_list").empty();
+									$.each(data,function(index,item){
+										
+										
+										var score = item.score;
+										var custid = item.custid;
+										
+										console.log(score);
+										
+										var div = $("<div></div>").addClass("review_list");
+										$(div).append($("<div></div>").html("별점: "+score));
+										$(div).append($("<div></div>").html("아이디: "+custid));
+										
+										var review_content = $("<textarea></textarea>").attr({
+											type: "text",
+											id : 'review_text',
+											rows: 3,
+											cols: 60,
+											disabled: "disabled"
+										});
+										
+										$(review_content).append(item.review_content);
+										$(div).append(review_content);
+										
+										$("#review_list").append(div);
+										
+									});
+								}
+							});
+							//평균별점 구하기
+							$.ajax({
+								url:"AvgScore",
+								data:  {ticketid: sessionStorage.getItem("ticketid")},
+								success: function(data){
+									if(data == 0){
+										//$("#ulavgScore").append("아직 작성된 후기가 없습니다.");
+										//$("#avgScore").hide();
+										//$("#reviewOrder").hide();
+										
+									}else{
+										$("#avgScore").append(data);
+									}
+								}
+							});
+						}
+					}
+				})
+				
+				
+			
+			});
+		});
+		
+		
+		
+		//성별별로 예약자 수 구하기
+		$.ajax({
+			url:"CountGender",
+			data: {ticketid: sessionStorage.getItem("ticketid")},
+			success: function(data){
+				$(".gender").empty();
+				$.each(data,function(gender,cnt){
+					console.log("cnt:"+cnt);
+					if(cnt.여자 != null){
+						var li1 = $("<li></li>").attr({
+							id: 'woman'
+						});
+						$(li1).html("여자: "+cnt.여자+"명");
+					}
+					if(cnt.남자 != null){
+						var li2 = $("<li></li>").html("남자: "+cnt.남자+"명");
+					}
+					
+					$(".gender").append(li1,li2);
+				});
+			}
+		});
+		
+		//세대별로 예약자수 구하기
+		$.ajax({
+			url: "CountGeneration",
+			data: {ticketid: sessionStorage.getItem("ticketid")},
+			success: function(arr){
+				$(".generation").empty();
+				$.each(arr, function(index,item){
+					var generation;
+					var count;
+					$.each(item, function(key,value){
+						generation = key;
+						count = value;						
+					})
+					var li = $("<li></li>").html(generation+"대: "+count+"명");					
+					$(".generation").append(li);
+				});				
+			}
+		});
+		
+		// 네비게이션 바에서 클릭하면 카테고리별 목록으로 넘어가도록
+		var time = 1;
+	
+	var cate_current = "";
+	var cate_future = "";
+	var cate_past = "";
+
+	for (var i = 1; i <=4; i++) {
+		cate_current = '#cate'+i+"_current";
+		cate_future = '#cate'+i+"_future";
+		cate_past = '#cate'+i+"_past";
+		
+		$(cate_current).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+		
+		$(cate_future).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+		
+		$(cate_past).click(function(e){	
+			var target = this.id;
+			var cateid_num = $("#"+target).attr("cateid");
+			var time_num = $("#"+target).attr("time");
+		
+	    	 time = time_num;
+	    	 cateid = cateid_num;
+	    	 console.log(cateid);
+	    	 
+	    	 sessionStorage.setItem("time", time);
+	    	 sessionStorage.setItem("cateid", cateid);
+	    	 
+	    	 var url = "categoryPage.html?time="+time+"?cateid="+cateid;
+			location.replace(url);
+	     });
+	}
+
+	// 검색하면 결과가 나오도록
+	var searchKeyword = function(f){
+		$("#search_txt").keydown(function(e){ // 엔터 누르면 검색되도록 (아직 구현 X)
+			if(e.which == 13){
+				var keyword = $("#search_txt").val();
+				sessionStorage.setItem("keyword", keyword);
+				var url = "searchPage.html?keyword="+keyword;
+				location.replace(url);
+				}
+		});
+		
+		$("#search_btn").click(function(){ // 버튼 누르면 검색됨
+			var keyword = $("#search_txt").val();
+			sessionStorage.setItem("keyword", keyword);
+			var url = "searchPage.html?keyword="+keyword;
+			location.replace(url);
+		});
+	}// 검색 end
+	
+	searchKeyword();
+		
 		
 	});
 </script>
 </head>
 <body class="main_layout">
- 		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
+ 		<a href="mainTest.html"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
- 				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
+ 				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="signupTest.html" id="regist"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
-              <form action="" method="post" class="search">
-				   <input class="search_txt" type="search" placeholder="검색어 입력...">
-				   <a class="search_btn" href="example.html"><img src="./image/searchicon.png" width="35" height="35"></a>
-			  </form>
+              <div class="search" id="search" name="search">
+				   <input class="search_txt" type="search" placeholder="검색어 입력..." id="search_txt">
+				   <a class="search_btn" type="button" id="search_btn"><img  src="./image/searchicon.png" width="35" height="35"></a>
+			  </div>
               <ul>
-                  <li class="home"><a href="mainTest.jsp">홈</a></li>
-                  <li><a href="#">시사회</a></li>	
-                  <li><a href="#">연극</a></li>
-                  <li><a href="#">뮤지컬</a></li>
-                  <li><a href="#">콘서트</a></li>
+                  <li class="home"><a href="mainTest.html">홈</a></li>
+                  <li><a href="#">시사회</a>
+                  	<ul>
+                  		<li><a id="cate1_current" cateid="1" time="1">현재상영작</a></li>
+                  		<li><a id="cate1_future" cateid="1" time="2">개봉예정작</a></li>
+                  		<li><a id="cate1_past" cateid="1" time="0">과거상영작</a></li>
+                  	</ul>
+                  	</li>
+                  <li><a href="#">뮤지컬</a>
+	                  <ul>
+	                  	<li><a id="cate2_current" cateid="2" time="1">현재상영작</a></li>
+                  		<li><a id="cate2_future" cateid="2" time="2">개봉예정작</a></li>
+                  		<li><a id="cate2_past" cateid="2" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">연극</a>
+	                  <ul>
+	                  	<li><a id="cate3_current" cateid="3" time="1">현재상영작</a></li>
+                  		<li><a id="cate3_future" cateid="3" time="2">개봉예정작</a></li>
+                  		<li><a id="cate3_past" cateid="3" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
+                  <li><a href="#">콘서트</a>
+	                  <ul>
+	                  	<li><a id="cate4_current" cateid="4" time="1">현재상영작</a></li>
+                  		<li><a id="cate4_future" cateid="4" time="2">개봉예정작</a></li>
+                  		<li><a id="cate4_past" cateid="4" time="0">과거상영작</a></li>
+	                  	</ul>
+                  </li>
              </ul>
-        </nav>   
+        </nav>
         <!-- 상세 페이지 -->
         <!-- 티켓 인스턴스 정보 ul - li 작성 -->
         <hr>
@@ -442,7 +476,8 @@
         	<div id="datepicker"></div>
         	<div id="bookbox">
         	<div id="seat">잔여좌석 : </div>
-	        	<button id="btnbook">예매하기</button>
+	        	<button id="btnbook" disabled="disabled" type="button">예매하기</button>
+
 	        	<button id="btndraw">드로우</button>
 	        	<div id="localtime"></div>
         	</div>
@@ -451,11 +486,12 @@
         <div id="detail_tab">
 	        <ul>
 	        	<li>상세정보</li>
-	        	<li>위치</li>
-	        	<li>후기</li>
+	        	<li><a href="#a">위치</a></li>
+	        	<li><a href="#b">후기</a></li>
 	        </ul>
         </div>
         <div id="detail_content">
+        	<div id="art_img"></div>
         	<div id="vid_url"></div>
        		<ul>
        			<li>[ 캐스트 ]</li>
@@ -465,26 +501,47 @@
        			<li>[ Content ]</li>
        		</ul>
        			<p id="content"></p>
-       		<hr id="a"> 		
+       		<hr> 		
         </div>
-        <div>
-        	<div id="map" style="width:100%;height:550px"></div>
+        <div id="detail_location">
+        <img src="./image/mapicon.png" width="60" height="50" id="mapicon">
+        	<h2 class="detail_title" id="a">위치</h2> 
+        	<div id="location_box"><div id="map" style="width:100%;height:500px"></div></div>
         </div>
-        <!--        
-        <hr>     
-        <div>남녀 예매율</div>
-        <div>세대별 예매율</div>
+        <hr>
+       <div id="detail_review">
+     		<h2 class="detail_title" id="b">후기</h2>
+     		<div class="statistics">
+     		<div>
+      			<!-- 통계 -->
+      			<div>
+      			<img src="./image/manicon.png" width="100" height="100">
+      			<img src="./image/womanicon.png" width="100" height="100">
+      				<ul class="gender"></ul>
+      				<div id="divide"></div>
+      				<ul id="ulavgScore">
+      					<li id="avgScore">평균별점: </li><label>⭐</label>
+      				</ul>
+      				<ul class="generation"></ul>
+      			</div>
+      		</div>
+      			<!-- 후기 ==> 후기 위치로 이동 https://webisfree.com/2021-08-19/%ED%8A%B9%EC%A0%95-%EC%97%98%EB%A6%AC%EB%A8%BC%ED%8A%B8%EB%A1%9C-%EC%8A%A4%ED%81%AC%EB%A1%A4%EC%9D%84-%EC%B2%9C%EC%B2%9C%ED%9E%88-%EC%9D%B4%EB%8F%99%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95-scrollintoview-smooth -->
+		  	 	<!-- 후기 정렬 ==>평점 높은순/평점 낮은순 -->
+		        <select id="reviewOrder">
+			        	<option>스포일러성 후기가 있을 수 있습니다.</option>
+			        	<option id="desc">평점 높은순</option>
+			        	<option id="acs">평점 낮은순</option>
+		        </select>
+      			<!-- 후기내용 -->
+      			<div id="review_list"></div> 
+      		</div>
+      </div>
         
-        <!-- 후기 ==> 후기 위치로 이동 https://webisfree.com/2021-08-19/%ED%8A%B9%EC%A0%95-%EC%97%98%EB%A6%AC%EB%A8%BC%ED%8A%B8%EB%A1%9C-%EC%8A%A4%ED%81%AC%EB%A1%A4%EC%9D%84-%EC%B2%9C%EC%B2%9C%ED%9E%88-%EC%9D%B4%EB%8F%99%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95-scrollintoview-smooth -->
-  	  <!-- 후기 정렬 ==>평점 높은순/평점 낮은순 -->
-        <select>
-        	<option id="desc">평점 높은순</option>
-        	<option id="acs">평점 낮은순</option>
-        </select>
   	  <div id="main-footer">
-		<footer>
-			<div>Footer</div>
-		</footer>
+		
 	</div>	  
 </body>
+<footer>
+			<div>ⓒ CodingDoit corp.</div>
+</footer>
 </html>

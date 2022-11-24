@@ -87,12 +87,19 @@
 </style>
 <!-- main-header 구성하기 -->
 <style type="text/css">
+#menu{
+		z-index:100;
+	}
+
 	#navigation{
+		position: sticky;
 		top: 0;
+		z-index : 100;
 	}	
 	#navigation ul{
+		/*background-image: linear-gradient(90deg, #08428C, #091140);*/
 		background-color : #08428C;
-		border-radius : 5px 5px 5px 5px;
+		border-radius : 5px 5px 0px 0px;
 		list-style-type: none;
 	    margin: 0;
 	    padding: 0;
@@ -120,7 +127,7 @@
 		text-decoration: none;
 		line-height : 30px;
 	}
-	#navigation li:hover:not(.home){
+	#navigation li:hover:not(.home, #navigation li ul li){
 		transition-duration: 0.4s;
 		border-bottom: 5px solid #F2AE30;
 		padding-bottom : 9px;
@@ -128,10 +135,28 @@
 	#navigation ul li:hover ul {
 		display: block;
 	}
+	#navigation li ul{
+		z-index : 100;
+		position : absolute;
+		background-color : rgba(255, 255, 255, 0.8);
+		display : none;
+		height : auto; width : 170px;
+		margin-left : -60px;
+		margin-top : 14px;
+		border-radius : 0px 0px 10px 10px;
+	}
+	#navigation li ul li:hover{
+		font-weight : 600;
+	}
+	#navigation li ul li a{
+		color : #08348C;
+	}
 	hr{
-		border : 0;
+		position : absolute;
+		border: 0;
 		height : 2.5px;
 		background-color : #08348C;
+		top : 2000px;
 	}
 </style>
 <!-- menu-bar -->
@@ -280,7 +305,7 @@
  		<a href="mainTest.jsp"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
  				<a href="mainTest.jsp" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="myPageTest.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="mypage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
               <form action="" method="post" class="search">
@@ -290,8 +315,8 @@
               <ul>
                   <li class="home"><a href="mainTest.jsp">홈</a></li>
                   <li><a href="#">시사회</a></li>	
-                  <li><a href="#">연극</a></li>
                   <li><a href="#">뮤지컬</a></li>
+                  <li><a href="#">연극</a></li>
                   <li><a href="#">콘서트</a></li>
              </ul>
         </nav>
@@ -335,7 +360,8 @@
 	</form>
   	  <div id="main-footer">
 		<footer>
-			<div>Footer</div>
+			<div>ⓒ CodingDoit corp.
+</div>
 		</footer>
 	</div>	  
 </body>

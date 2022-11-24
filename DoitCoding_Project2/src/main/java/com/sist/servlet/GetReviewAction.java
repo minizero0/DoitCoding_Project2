@@ -2,6 +2,7 @@ package com.sist.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,20 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.sist.dao.ReviewDAO;
-import com.sist.vo.ReviewVO;
+import com.sist.vo.MyReviewVO;
 
 /**
- * Servlet implementation class InsertReview
+ * Servlet implementation class GetReviewAction
  */
-@WebServlet("/InsertReview")
-public class InsertReview extends HttpServlet {
+@WebServlet("/GetReviewAction")
+public class GetReviewAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertReview() {
+    public GetReviewAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,27 +33,15 @@ public class InsertReview extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=utf-8");
 		ReviewDAO dao = ReviewDAO.getInstance();
-		ReviewVO rv = new ReviewVO();
-		
-		int reviewid = dao.getNextReviewid();
-		String custid = request.getParameter("custid");
-		int ticketid = Integer.parseInt(request.getParameter("ticketid"));
-		double score = (double)Integer.parseInt(request.getParameter("score"));
-		String review_content = request.getParameter("review_content");
-		
-		rv.setReviewid(reviewid);
-		rv.setCustid(custid);
-		rv.setTicketid(ticketid);
-		rv.setScore(score);
-		rv.setReview_content(review_content);
-		
-		int re = dao.insertReview(rv);
+		ArrayList<MyReviewVO> r = dao.findByCustid(request.getParameter("custid"));
+		System.out.println(r);
+		response.setContentType("application/json;charset=utf-8");
+		Gson gson = new Gson();
 		PrintWriter out = response.getWriter();
-		out.print(re);
+		String str = gson.toJson(r);
+		out.print(str);
 		out.close();
-		
 	}
 
 	/**

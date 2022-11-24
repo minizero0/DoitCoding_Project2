@@ -53,6 +53,12 @@
 	#login img{
 		padding-right : 6px;
 	}
+	#logout{
+		display:none;
+	}
+	#mypage{
+		display:none;
+	}
 	.search{
 		overflow : hidden;
 		position: relative;
@@ -80,12 +86,19 @@
   		right : -25px;
 	}
 /* main-header 구성하기 */
+	#menu{
+		z-index:100;
+	}
+
 	#navigation{
+		position: sticky;
 		top: 0;
+		z-index : 100;
 	}	
 	#navigation ul{
+		/*background-image: linear-gradient(90deg, #08428C, #091140);*/
 		background-color : #08428C;
-		border-radius : 5px 5px 5px 5px;
+		border-radius : 5px 5px 0px 0px;
 		list-style-type: none;
 	    margin: 0;
 	    padding: 0;
@@ -113,7 +126,7 @@
 		text-decoration: none;
 		line-height : 30px;
 	}
-	#navigation li:hover:not(.home){
+	#navigation li:hover:not(.home, #navigation li ul li){
 		transition-duration: 0.4s;
 		border-bottom: 5px solid #F2AE30;
 		padding-bottom : 9px;
@@ -121,10 +134,28 @@
 	#navigation ul li:hover ul {
 		display: block;
 	}
+	#navigation li ul{
+		z-index : 100;
+		position : absolute;
+		background-color : rgba(255, 255, 255, 0.8);
+		display : none;
+		height : auto; width : 170px;
+		margin-left : -60px;
+		margin-top : 14px;
+		border-radius : 0px 0px 10px 10px;
+	}
+	#navigation li ul li:hover{
+		font-weight : 600;
+	}
+	#navigation li ul li a{
+		color : #08348C;
+	}
 	hr{
-		border : 0;
+		position : absolute;
+		border: 0;
 		height : 2.5px;
 		background-color : #08348C;
+		top : 2000px;
 	}
 /* 검색결과 글꼴 */
 	#search_title{

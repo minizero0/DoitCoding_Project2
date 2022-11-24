@@ -14,9 +14,9 @@
 			$.ajax(url, {
 				data:data,
 				success:function(login_Flag){
-					alert(login_Flag);
+					alert("로그인 되었습니다.");
 					
-					if(login_Flag=="true"){
+					if(login_Flag=='true'){
 						sessionStorage.setItem("custid", custid);
 						var url = "mainTest.html?custid="+custid;
 						location.replace(url);
@@ -48,7 +48,7 @@
 			</ul>
 				<input type="submit" id="btn_login" value="Login" name="btn_login"><br>
 		<div class="caption">
-				<a href="signupTest.html">회원가입</a> <a href="#">ID/PW 찾기</a>
+				<a href="signupTest.html">회원가입</a> <a href="findCustid.html">ID</a><a href="findPW.html">PW</a>
 		</div>					
 		</form>
 	</div>	

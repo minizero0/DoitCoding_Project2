@@ -3,7 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+<style type="text/css">	
+#review_score{
+	position: absolute;
+	top:50%;
+	left: 50%;
+	transform: translate(-50% , -50%);
+	border:2px solid #08428C;
+	border-radius:15px;
+	width : 680px; height : 250px;
+	background-color : white;
+}
+.text-bold{
+	margin-left : 40px;
+	font-weight : 600;
+	color : #08428C;
+}
 #myform fieldset{
     display: inline-block;
     direction: rtl;
@@ -16,9 +31,12 @@
     display: none;
 }
 #myform label{
-    font-size: 3em;
+	position:relative;
+	left : 15px; top : 5px;
+    font-size: 2em;
     color: transparent;
     text-shadow: 0 0 0 #f0f0f0;
+    font : "맑은고딕";
 }
 #myform label:hover{
     text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
@@ -30,80 +48,101 @@
     text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
 }
 #content {
-    width: 100%;
-    height: 150px;
+    width: 600px; height: 150px;
     padding: 10px;
+    margin-top : 15px;
+    margin-left : 40px;
     box-sizing: border-box;
-    border: solid 1.5px #D3D3D3;
+    border: solid 1.5px #dcdcdc;
     border-radius: 5px;
     font-size: 16px;
     resize: none;
 }
-
+#addBtn{
+	position : relative;
+	width : 110px; height : 40px;
+	font-size : 14px;
+	border : none; cursor: pointer;
+	border-radius : 10px;
+	background-color : #08428C;
+	color : #F2AE30;
+	margin-left : 175px;
+}
 </style>
 <script type="text/javascript" src = "https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
-		
-	
 	$("#addBtn").click(function(){
 		var arr = ($("#myform").serializeArray());
-		console.log(arr)
 		var score = arr[0].value;						//별점 스코어 변환
 		var review_content = $("#content").val();		//리뷰 내용
 		
-		console.log(score,review_content)
-		
-		var custid = "ym1234";
-		var ticketid = 28;
-		var reviewid = 3;
+		var custid = sessionStorage.getItem("custid");
+		var ticketid = sessionStorage.getItem("ticketid");
 		
 		var data = {
-			reviewid:reviewid,
 			custid:custid,
 			ticketid:ticketid,
 			score:score,
 			review_content:review_content
 		}
-		
 		$.ajax({
-			url:"InsertReview",
-			data:data,
+			url:"CheckReview",
+			data:{
+				custid:custid,
+				ticketid:ticketid
+			},
 			success:function(data){
+				console.log(data);
 				if(data==1){
-					alert("리뷰등록완료")	
-				}else{
-					alert("리뷰등록실패")
+					alert("이미 등록하셨습니다.");
+					$(location).attr("href","mypage_Review.html");
 				}
-					
+				else{
+					$.ajax({
+						url:"InsertReview",
+						data:data,
+						success:function(data){
+							console.log(data);
+							if(data==1){
+								alert("리뷰등록완료")
+								$(location).attr("href","mypage_Review.html");
+							}else{
+								alert("리뷰등록실패")
+							}		
+						}
+					})
+				}
 			}
 		})
+		
+		
 	})
-	
 })
 </script>
 </head>
 <body>
  	<form class="mb-3" name="myform" id="myform" method="post">
+ 	<div id="review_score">
+	<span class="text-bold">평점</span>
 	<fieldset>
-		<span class="text-bold">별점을 선택해주세요</span>
 		<input type="radio" name="reviewStar" value="5" id="rate1"><label
-			for="rate1">★</label>
+			for="rate1">⭐</label>
 		<input type="radio" name="reviewStar" value="4" id="rate2"><label
-			for="rate2">★</label>
+			for="rate2">⭐</label>
 		<input type="radio" name="reviewStar" value="3" id="rate3"><label
-			for="rate3">★</label>
+			for="rate3">⭐</label>
 		<input type="radio" name="reviewStar" value="2" id="rate4"><label
-			for="rate4">★</label>
+			for="rate4">⭐</label>
 		<input type="radio" name="reviewStar" value="1" id="rate5"><label
-			for="rate5">★</label>
+			for="rate5">⭐</label>
 	</fieldset>
+		<button id="addBtn">등 록</button>
 	<div>
 		<textarea class="col-auto form-control" type="text" id="content"
 				  placeholder="내용을 입력해주세요"></textarea>
 	</div>
-	
-</form>			
-	<button id = "addBtn">등록</button>
+	</div>
+	</form>			
 </body>
 </html>

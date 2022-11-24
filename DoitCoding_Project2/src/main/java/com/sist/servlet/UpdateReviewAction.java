@@ -13,16 +13,16 @@ import com.sist.dao.ReviewDAO;
 import com.sist.vo.ReviewVO;
 
 /**
- * Servlet implementation class InsertReview
+ * Servlet implementation class UpdateReviewAction
  */
-@WebServlet("/InsertReview")
-public class InsertReview extends HttpServlet {
+@WebServlet("/UpdateReviewAction")
+public class UpdateReviewAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertReview() {
+    public UpdateReviewAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,23 +35,20 @@ public class InsertReview extends HttpServlet {
 		ReviewDAO dao = ReviewDAO.getInstance();
 		ReviewVO rv = new ReviewVO();
 		
-		int reviewid = dao.getNextReviewid();
 		String custid = request.getParameter("custid");
 		int ticketid = Integer.parseInt(request.getParameter("ticketid"));
-		double score = (double)Integer.parseInt(request.getParameter("score"));
 		String review_content = request.getParameter("review_content");
 		
-		rv.setReviewid(reviewid);
+		
 		rv.setCustid(custid);
 		rv.setTicketid(ticketid);
-		rv.setScore(score);
+		
 		rv.setReview_content(review_content);
 		
-		int re = dao.insertReview(rv);
+		int re = dao.updateReview(rv);
 		PrintWriter out = response.getWriter();
 		out.print(re);
 		out.close();
-		
 	}
 
 	/**

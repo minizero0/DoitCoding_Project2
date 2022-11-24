@@ -11,7 +11,25 @@
 		
 		var time = sessionStorage.getItem("time"); // time 받아오기
 		var cateid = sessionStorage.getItem("cateid"); // cateid 받아오기
+		var custid = sessionStorage.getItem("custid");
 		
+		if(custid != null){
+			$("#login").css('display', 'none');
+			$("#regist").css('display', 'none');
+			$("#logout").css('display','inline-block');
+			$("#mypage").css('display','inline-block');
+		}
+		
+		$("#logout").click(function(e){
+	        if(confirm("로그아웃 하시겠습니까?")){
+		            $("#login").css('display', 'inline-block');
+		    		$("#regist").css('display', 'inline-block');
+		    		$("#logout").css('display','none');
+		    		$("#mypage").css('display','none');
+		    		sessionStorage.removeItem("custid");
+		    		e.preventDefault();		
+	        }
+	    })
 		// 카테고리+시간에 해당하는 목록 출력
 		var selectTicket = function(){
 			$.ajax("SelectTicketMain", {
@@ -22,7 +40,7 @@
 						var a = $("<a></a>").attr({
 							ticketid: arr[i].ticketid,
 							id: "preview"+i,
-							href:"detailTest.html?ticketid="+arr[i].ticketid
+							href:"detailPageTest.html?ticketid="+arr[i].ticketid
 						});				
 							var img = $("<img>").attr({
 								src: "images/"+arr[i].img_fname,
@@ -122,7 +140,7 @@
 	// 검색하면 결과가 나오도록
 	var searchKeyword = function(f){
 		$("#search_txt").keydown(function(e){ // 엔터 누르면 검색되도록 (아직 구현 X)
-			if(e.keyCode == 13){
+			if(e.which == 13){
 				var keyword = $("#search_txt").val();
 				sessionStorage.setItem("keyword", keyword);
 				var url = "searchPage.html?keyword="+keyword;
@@ -147,14 +165,16 @@
 <body class="mypage_layout">
  		<a href="mainTest.html"><img src="./image/logo.png" id="logo"></a>
  		<div class="main_user">
+ 				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
  				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="myPage_Info.html"><img src="./image/mypageicon.png">마이페이지</a>
+ 				<a href="signupTest.html" id="regist"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
-              <form class="search" id="search" name="search">
+              <div class="search" id="search" name="search">
 				   <input class="search_txt" type="search" placeholder="검색어 입력..." id="search_txt">
 				   <a class="search_btn" type="button" id="search_btn"><img  src="./image/searchicon.png" width="35" height="35"></a>
-			  </form>
+			  </div>
               <ul>
                   <li class="home"><a href="mainTest.html">홈</a></li>
                   <li><a href="#">시사회</a>
@@ -164,14 +184,14 @@
                   		<li><a id="cate1_past" cateid="1" time="0">과거상영작</a></li>
                   	</ul>
                   	</li>
-                  <li><a href="#">연극</a>
+                  <li><a href="#">뮤지컬</a>
 	                  <ul>
 	                  	<li><a id="cate2_current" cateid="2" time="1">현재상영작</a></li>
                   		<li><a id="cate2_future" cateid="2" time="2">개봉예정작</a></li>
                   		<li><a id="cate2_past" cateid="2" time="0">과거상영작</a></li>
 	                  	</ul>
                   </li>
-                  <li><a href="#">뮤지컬</a>
+                  <li><a href="#">연극</a>
 	                  <ul>
 	                  	<li><a id="cate3_current" cateid="3" time="1">현재상영작</a></li>
                   		<li><a id="cate3_future" cateid="3" time="2">개봉예정작</a></li>
@@ -192,7 +212,7 @@
 		</div>
   	  <div id="main-footer">
 		<footer>
-			<div>Footer</div>
+			<div>ⓒ CodingDoit corp.</div>
 		</footer>
 	</div>	  
 </body>

@@ -8,9 +8,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
-	
-	
-	
 	var width = $("[data-role='slider']").attr("data-width");
 	var height = $("[data-role='slider']").attr("data-height");
 	var count = $("[data-role='slider'] div.item").length;
@@ -67,7 +64,7 @@ $(function(){
 						height: 400
 					});
 					$("#rank_preview"+i).attr('ticketid', arr[i].ticketid);
-					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					var url = "detailPageTest.html?ticketid="+arr[i].ticketid;
 					$("#rank_preview"+i).attr('href', url);
 					$("#rank_preview"+i).append(img);
 					
@@ -101,7 +98,7 @@ $(function(){
 						height: 400,
 					});
 					$("#current_preview"+i).attr('ticketid', arr[i].ticketid);
-					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					var url = "detailPageTest.html?ticketid="+arr[i].ticketid;
 					$("#current_preview"+i).attr('href', url);
 					$("#current_preview"+i).append(img);
 					
@@ -134,7 +131,7 @@ $(function(){
 						height: 400
 					});
 					$("#future_preview"+i).attr('ticketid', arr[i].ticketid);
-					var url = "detailTest.html?ticketid="+arr[i].ticketid;
+					var url = "detailPageTest.html?ticketid="+arr[i].ticketid;
 					$("#future_preview"+i).attr('href', url);
 					$("#future_preview"+i).append(img);
 					
@@ -154,7 +151,17 @@ $(function(){
 	
 	
 	var cateid = 2; // review 테이블에 카테고리가 연극인 것 외에는 인스턴스가 없으므로 기본값을 2로 설정함
-	
+	// 사용자가 가입 시 입력한 선호 카테고리가 기본값으로 되게하기
+	if(sessionStorage.getItem("custid") != null){
+		$.ajax("GetCustomerAction", {
+			data:{custid:sessionStorage.getItem("custid")},
+			async:false,
+			success:function(key, value){
+				console.log("ajax 안 " +key.cateid);	
+				cateid = key.cateid;
+			}
+		});		
+	}
 		selectRankingBycategory();
 		selectCurrentBycategory();
 		selectFutureBycategory();
@@ -277,7 +284,7 @@ $(function(){
 	// 검색하면 결과가 나오도록
 	var searchKeyword = function(f){
 		$("#search_txt").keydown(function(e){ // 엔터 누르면 검색되도록 (아직 구현 X)
-			if(e.keyCode == 13){
+			if(e.which == 13){
 				var keyword = $("#search_txt").val();
 				sessionStorage.setItem("keyword", keyword);
 				var url = "searchPage.html?keyword="+keyword;
@@ -297,23 +304,23 @@ $(function(){
 	
 	// 로그인한 정보 불러오기
 	
-	// 로그인한 정보 불러오기
-	
 	var custid = sessionStorage.getItem("custid");
 	
-	if(custid != ""){
+	if(custid != null){
 		$("#login").css('display', 'none');
 		$("#regist").css('display', 'none');
 		$("#logout").css('display','inline-block');
+		$("#mypage").css('display','inline-block');
 	}
 	
 	$("#logout").click(function(e){
         if(confirm("로그아웃 하시겠습니까?")){
-        	$("#login").css('display', 'inline-block');
-    		$("#regist").css('display', 'inline-block');
-    		$("#logout").css('display','none');
-        	sessionStorage.removeItem("custid");
-        	e.preventDefault();
+	            $("#login").css('display', 'inline-block');
+	    		$("#regist").css('display', 'inline-block');
+	    		$("#logout").css('display','none');
+	    		$("#mypage").css('display','none');
+	    		sessionStorage.removeItem("custid");
+	    		e.preventDefault();		
         }
     })
 	
@@ -326,14 +333,14 @@ $(function(){
  		<div class="main_user">
  				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
  				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
- 				<a href="signupTest.html" id ="regist"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="signupTest.html" id="regist"><img src="./image/signupicon.png">회원가입</a>
  				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
-              <form class="search" id="search" name="search">
+              <div class="search" id="search" name="search">
 				   <input class="search_txt" type="search" placeholder="검색어 입력..." id="search_txt">
 				   <a class="search_btn" type="button" id="search_btn"><img  src="./image/searchicon.png" width="35" height="35"></a>
-			  </form>
+			  </div>
               <ul>
                   <li class="home"><a href="mainTest.html">홈</a></li>
                   <li><a href="#">시사회</a>
@@ -343,14 +350,14 @@ $(function(){
                   		<li><a id="cate1_past" cateid="1" time="0">과거상영작</a></li>
                   	</ul>
                   	</li>
-                  <li><a href="#">연극</a>
+                  <li><a href="#">뮤지컬</a>
 	                  <ul>
 	                  	<li><a id="cate2_current" cateid="2" time="1">현재상영작</a></li>
                   		<li><a id="cate2_future" cateid="2" time="2">개봉예정작</a></li>
                   		<li><a id="cate2_past" cateid="2" time="0">과거상영작</a></li>
 	                  	</ul>
                   </li>
-                  <li><a href="#">뮤지컬</a>
+                  <li><a href="#">연극</a>
 	                  <ul>
 	                  	<li><a id="cate3_current" cateid="3" time="1">현재상영작</a></li>
                   		<li><a id="cate3_future" cateid="3" time="2">개봉예정작</a></li>
@@ -374,10 +381,10 @@ $(function(){
 						<img src="./image/monster.jpg" class="poster">				
 					</div>
 					<div class="item" style="float: left;">				
-						<img src="./image/monster2.jpg" class="poster">
+						<img src="./images/가면산장살인사건_main_3.jpg" class="poster">
 					</div>
 					<div class="item" style="float: left;">
-						<img src="./image/upposter.jpg" class="poster">
+						<img src="./images/마틸다.jpg" class="poster">
 					</div>
 				</div>
 			</div>
@@ -390,8 +397,8 @@ $(function(){
      	<h2>장르별랭킹</h2>
 	     	<ul>
 	               	<li><a id="rank_cate1">시사회</a></li>	
-	                <li><a id="rank_cate2">연극</a></li>
-	                <li><a id="rank_cate3">뮤지컬</a></li>
+	                <li><a id="rank_cate2">뮤지컬</a></li>
+	                <li><a id="rank_cate3">연극</a></li>
 	                <li><a id="rank_cate4">콘서트</a></li>
 	     	</ul>
 	     	<br>
@@ -407,8 +414,8 @@ $(function(){
      	<h2>현재상영작 </h2>
 	     	<ul id="current_cate">
 	               	<li><a id="current_cate1">시사회</a></li>	
-	                <li><a id="current_cate2">연극</a></li>
-	                <li><a id="current_cate3">뮤지컬</a></li>
+	                <li><a id="current_cate2">뮤지컬</a></li>
+	                <li><a id="current_cate3">연극</a></li>
 	                <li><a id="current_cate4">콘서트</a></li>
 	     	</ul>
 	     	<br>
@@ -423,8 +430,8 @@ $(function(){
      	<h2>개봉예정작</h2>
 	     	<ul id="future_cate">
 	               	<li><a id="future_cate1">시사회</a></li>	
-	                <li><a id="future_cate2">연극</a></li>
-	                <li><a id="future_cate3">뮤지컬</a></li>
+	                <li><a id="future_cate2">뮤지컬</a></li>
+	                <li><a id="future_cate3">연극</a></li>
 	                <li><a id="future_cate4">콘서트</a></li>
 	     	</ul>
 	     	<br>
@@ -435,7 +442,8 @@ $(function(){
      </div>
      <div id="main-footer">
 		<footer>
-			<div>Footer</div>
+			<div>ⓒ CodingDoit corp.
+</div>
 		</footer>
 	</div>	  
 </body>

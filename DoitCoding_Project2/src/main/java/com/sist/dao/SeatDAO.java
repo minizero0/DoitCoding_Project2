@@ -49,28 +49,27 @@ public class SeatDAO {
     
     
     
-//좌석 예매
-    public int registSeat(int seatid) {
-        int re = -1;
-        String sql = "update seat set check_seat = 'y' where seatid = ?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            Context context = new InitialContext();
-            DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
-            conn = ds.getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, seatid);
-            re = pstmt.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("예외발생:"+e.getMessage());
-        } finally {
-            if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
-            if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+    //좌석 예매
+        public int registSeat(int seatid) {
+            int re = -1;
+            String sql = "update seat set check_seat = 'y' where seatid = ?";
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            try {
+                Context context = new InitialContext();
+                DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+                conn = ds.getConnection();
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, seatid);
+                re = pstmt.executeUpdate();
+            } catch (Exception e) {
+                System.out.println("예외발생:"+e.getMessage());
+            } finally {
+                if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+                if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+            }
+            return re;
         }
-        return re;
-    }
-        
     
     
     //좌석 추가
@@ -207,40 +206,6 @@ public class SeatDAO {
             } finally {
                 if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
                 if(stmt != null) {try {stmt.close();} catch (SQLException e) {e.printStackTrace();}}
-                if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
-            }
-            return list;
-        }
-        
-      //Tikcetid의 전체 좌석 목록 출력
-        public ArrayList<SeatVO> listSeatCheck_No(int ticketid){
-            ArrayList<SeatVO> list = new ArrayList<SeatVO>();
-            String sql = "select * from seat where ticketid = ? and check_seat = 'n'";
-            Connection conn = null;
-            PreparedStatement pstmt = null;
-            ResultSet rs = null;
-            try {
-                Context context = new InitialContext();
-                DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
-                conn = ds.getConnection();
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setInt(1, ticketid);
-                rs = pstmt.executeQuery();
-                
-                while(rs.next()) {
-                    SeatVO s = new SeatVO();
-                    s.setSeatid(rs.getInt("seatid"));
-                    s.setPlaceid(rs.getString("placeid"));
-                    s.setTicketid(rs.getInt("ticketid"));
-                    s.setSeatname(rs.getString("seatname"));
-                    s.setCheck_seat(rs.getString("check_seat"));
-                    list.add(s);
-                }
-            } catch (Exception e) {
-                System.out.println("예외발생:"+e.getMessage());
-            } finally {
-                if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
-                if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
                 if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
             }
             return list;
