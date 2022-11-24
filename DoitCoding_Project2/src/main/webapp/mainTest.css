@@ -46,6 +46,9 @@
 	#login img{
 		padding-right : 6px;
 	}
+	#logout{
+		display: none;
+	}
 	.search{
 		overflow : hidden;
 		position: relative;

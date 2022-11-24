@@ -25,6 +25,32 @@ public class DrawDAO {
 		return drawDAO;
 	}
 	
+	//새로운 드로우번호 발행
+    public int getNextDrawid() {
+        int drawid = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "select nvl(max(drawid),0) + 1 from draw";
+        try {
+            Context context = new InitialContext();
+            DataSource ds = (DataSource)context.lookup("java:/comp/env/mydb");
+            conn = ds.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            if(rs.next()) {
+                drawid = rs.getInt(1);
+            }
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }finally {
+            if(pstmt != null) {try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}}
+            if(conn != null) {try {conn.close();} catch (SQLException e) {e.printStackTrace();}}
+            if(rs != null) {try {rs.close();} catch (SQLException e) {e.printStackTrace();}}
+        }
+        return drawid;
+    }
+	
 	
 	//드로우 추가
 	public int insertDraw(DrawVO d) {

@@ -8,6 +8,9 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	
+	
+	
 	var width = $("[data-role='slider']").attr("data-width");
 	var height = $("[data-role='slider']").attr("data-height");
 	var count = $("[data-role='slider'] div.item").length;
@@ -294,7 +297,25 @@ $(function(){
 	
 	// 로그인한 정보 불러오기
 	
+	// 로그인한 정보 불러오기
+	
 	var custid = sessionStorage.getItem("custid");
+	
+	if(custid != ""){
+		$("#login").css('display', 'none');
+		$("#regist").css('display', 'none');
+		$("#logout").css('display','inline-block');
+	}
+	
+	$("#logout").click(function(e){
+        if(confirm("로그아웃 하시겠습니까?")){
+        	$("#login").css('display', 'inline-block');
+    		$("#regist").css('display', 'inline-block');
+    		$("#logout").css('display','none');
+        	sessionStorage.removeItem("custid");
+        	e.preventDefault();
+        }
+    })
 	
 
 });
@@ -304,7 +325,8 @@ $(function(){
  		<img src="./image/logo.png" id="logo">
  		<div class="main_user">
  				<a href="loginTest.html" id="login"><img src="./image/loginicon.png">로그인</a>
- 				<a href="signupTest.html"><img src="./image/signupicon.png">회원가입</a>
+ 				<a href="mainTest.html" id="logout"><img src="./image/logouticon.png">로그아웃</a>
+ 				<a href="signupTest.html" id ="regist"><img src="./image/signupicon.png">회원가입</a>
  				<a href="mypage_Info.html" id="mypage"><img src="./image/mypageicon.png">마이페이지</a>
  		</div>
  	    <nav id="navigation">
